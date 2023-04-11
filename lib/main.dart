@@ -342,6 +342,7 @@ class FavoriteSection extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
                   onPressed: () {},
@@ -355,7 +356,7 @@ class FavoriteSection extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 180),
-                IconButton(
+                /*IconButton(
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -382,14 +383,14 @@ class FavoriteSection extends StatelessWidget {
                       Icons.insert_photo,
                       size: 23,
                       color: Colors.white,
-                    )),
+                    )),*/
                 IconButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            ImagePickerWidget(),
+                            ImagePickerWidget1(),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           var begin = 0.0;
