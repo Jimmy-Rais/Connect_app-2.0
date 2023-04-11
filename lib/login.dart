@@ -32,8 +32,9 @@ class _loginState extends State<login> {
   }
 
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Column(
         children: [
           AnimatedOpacity(
             opacity: _opacity,

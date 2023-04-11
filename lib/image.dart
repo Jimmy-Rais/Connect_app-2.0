@@ -103,7 +103,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
                               TypewriterAnimatedText(
                                 'Share your passions...\n\nSpread positivity...\n\nConnect with others...\n\n',
                                 textStyle: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 14,
                                   color: Colors.white,
                                   fontStyle: FontStyle.italic,
                                 ),

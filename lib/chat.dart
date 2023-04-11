@@ -167,7 +167,7 @@ class chattingSection extends StatelessWidget {
                 fontSize: 12,
               ),
             ),
-            SizedBox(height: 45),
+            SizedBox(height: 50),
           ],
         ),
       ),
