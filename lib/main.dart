@@ -84,16 +84,17 @@ class _HomePageState extends State<HomePage> {
       onWillPop: _onWillPop,
       child: Scaffold(
         backgroundColor:
-            _isDarkMode ? Colors.grey[800] : Color.fromARGB(207, 245, 245, 245),
+            _isDarkMode ? Colors.grey[800] : Color.fromARGB(255, 245, 245, 245),
         appBar: AppBar(
-          backgroundColor: _isDarkMode ? Colors.grey[800] : Colors.grey[100],
+          backgroundColor: Color.fromARGB(105, 77, 140, 176),
+          /*_isDarkMode ? Colors.grey[800] : Colors.grey[100],*/
           leading: Builder(builder: (context) {
             return IconButton(
               onPressed: (() => Scaffold.of(context).openDrawer()),
               icon: const Icon(
                 Icons.menu,
                 size: 30,
-                color: Colors.black,
+                color: Colors.white,
               ),
             );
           }),
@@ -123,7 +124,7 @@ class _HomePageState extends State<HomePage> {
         drawer: Drawer(
           backgroundColor: _isDarkMode
               ? Colors.grey[800]
-              : Color.fromARGB(238, 245, 245, 245),
+              : Color.fromARGB(255, 245, 245, 245),
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
@@ -131,10 +132,8 @@ class _HomePageState extends State<HomePage> {
                   height: 320,
                   child: DrawerHeader(
                       decoration: BoxDecoration(
-                        color: _isDarkMode
-                            ? Color.fromARGB(105, 77, 140, 176)
-                            : Color.fromARGB(255, 126, 155,
-                                171), /*Color.fromARGB(255, 99, 178, 223),*/
+                        color: Color.fromARGB(105, 77, 140, 176),
+                        /*Color.fromARGB(255, 99, 178, 223),*/
                       ),
                       child: Column(
                         children: [
@@ -288,6 +287,9 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Color.fromARGB(255, 99, 178, 223),
           onPressed: () {
             showMenu(
+              color: _isDarkMode
+                  ? Colors.grey[800]
+                  : Color.fromARGB(255, 245, 245, 245),
               context: context,
               position: RelativeRect.fromLTRB(
                   120.0, MediaQuery.of(context).size.height - 80.0, 80.0, 0.0),
@@ -296,22 +298,54 @@ class _HomePageState extends State<HomePage> {
                   child: ListTile(
                     leading: Icon(
                       Icons.edit,
+                      color: _isDarkMode
+                          ? Color.fromARGB(255, 245, 245, 245)
+                          : Colors.grey[800],
                     ),
-                    title: Text('New discussion'),
+                    title: Text(
+                      'New discussion',
+                      style: TextStyle(
+                        color: _isDarkMode
+                            ? Color.fromARGB(255, 245, 245, 245)
+                            : Colors.grey[800],
+                      ),
+                    ),
                   ),
                 ),
                 PopupMenuItem(
                   child: ListTile(
-                    leading: Icon(Icons.key),
-                    title: Text('Archived'),
+                    leading: Icon(
+                      Icons.key,
+                      color: _isDarkMode
+                          ? Color.fromARGB(255, 245, 245, 245)
+                          : Colors.grey[800],
+                    ),
+                    title: Text(
+                      'Archived',
+                      style: TextStyle(
+                        color: _isDarkMode
+                            ? Color.fromARGB(255, 245, 245, 245)
+                            : Colors.grey[800],
+                      ),
+                    ),
                   ),
                 ),
                 PopupMenuItem(
                   child: ListTile(
                     leading: Icon(
                       Icons.favorite,
+                      color: _isDarkMode
+                          ? Color.fromARGB(255, 245, 245, 245)
+                          : Colors.grey[800],
                     ),
-                    title: Text('Channels'),
+                    title: Text(
+                      'Channels',
+                      style: TextStyle(
+                        color: _isDarkMode
+                            ? Color.fromARGB(255, 245, 245, 245)
+                            : Colors.grey[800],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -428,7 +462,7 @@ class FavoriteSection extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 15), //Contenu à la verticale
         decoration: BoxDecoration(
-          color: Color.fromARGB(105, 99, 178, 223),
+          color: const Color.fromARGB(105, 77, 140, 176),
           /*Color.fromARGB(255, 99, 178, 223),*/
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(-60),
@@ -698,8 +732,8 @@ class MessageSection extends StatelessWidget {
                                 Mess['sendername'],
                                 style: TextStyle(
                                   color: Colors.grey,
+                                  fontStyle: FontStyle.italic,
                                   fontSize: 13,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               SizedBox(
@@ -711,8 +745,9 @@ class MessageSection extends StatelessWidget {
                                   Text(
                                     Mess['message'],
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.grey,
                                       fontSize: 13,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -721,7 +756,13 @@ class MessageSection extends StatelessWidget {
                           ),
                           Column(
                             children: [
-                              Text(Mess['date']),
+                              Text(
+                                Mess['date'],
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              ),
                               SizedBox(height: 8),
                               Mess['unread'] != 0
                                   ? Container(

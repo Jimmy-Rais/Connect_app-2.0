@@ -170,9 +170,10 @@ class _useridState extends State<userid> {
                       MaterialPageRoute(builder: (context) => HomePage()));
                   _createUserWithPhoto;
                   createUser(
-                      user_name: user_name,
-                      birth_date: birth_date,
-                      photo: _image!);
+                    user_name: user_name,
+                    birth_date: birth_date,
+                    photo: _image!,
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Color.fromARGB(255, 99, 178, 223),

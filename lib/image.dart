@@ -53,7 +53,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(79, 158, 158, 158),
+        backgroundColor: Color.fromARGB(105, 77, 140, 176),
+        /* Color.fromARGB(79, 158, 158, 158),*/
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
@@ -82,12 +83,12 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
             ),
             Container(
                 width: 500,
-                height: 500,
+                height: 530,
                 child: (_image != null)
                     ? Image.file(_image!, fit: BoxFit.cover)
                     : Container(
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Color.fromARGB(0, 158, 158, 158),
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20)),
@@ -96,6 +97,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
                           style: const TextStyle(
                             fontSize: 30.0,
                             fontFamily: 'RobotoMono',
+                            fontStyle: FontStyle.italic,
                           ),
                           child: Center(
                               child: AnimatedTextKit(
