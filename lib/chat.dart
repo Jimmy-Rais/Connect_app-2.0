@@ -95,8 +95,27 @@ class _BottomsectionState extends State<Bottomsection> {
         color: Colors.white,
         child: Row(
           children: [
+            IconButton(
+                onPressed: () {
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(
+                        0,
+                        MediaQuery.of(context).size.height / 2,
+                        0,
+                        MediaQuery.of(context).size.height / 2),
+                    items: [
+                      PopupMenuItem(
+                        child: PopUpContent(),
+                      ),
+                    ],
+                  );
+                },
+                icon: Icon(Icons.attachment,
+                    size: 30, color: Color.fromARGB(255, 99, 178, 223))),
             Expanded(
               child: TextField(
+                autofocus: false,
                 controller: controller,
                 decoration: InputDecoration(
                   hintText: '      Say hi...',
@@ -110,8 +129,7 @@ class _BottomsectionState extends State<Bottomsection> {
                       color: Color.fromARGB(255, 99, 178, 223),
                     ),
                   ),
-                  prefixIcon: Icon(Icons.emoji_emotions_outlined,
-                      size: 30, color: Color.fromARGB(255, 99, 178, 223)),
+                  //prefixIcon:
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18)),
                 ),
@@ -181,6 +199,67 @@ Future sendMsg({required String msg}) async {
     'message': msg,
   };
   await docUser.set(json);
+}
+
+class PopUpContent extends StatefulWidget {
+  @override
+  _PopUpContentState createState() => _PopUpContentState();
+}
+
+class _PopUpContentState extends State<PopUpContent> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        //itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+        PopupMenuItem(
+          child: ListTile(
+            leading: Icon(Icons.add_a_photo),
+            title: Text('Camera'),
+            onTap: () {
+              // Do something when image option is selected
+            },
+          ),
+        ),
+        PopupMenuItem(
+          child: ListTile(
+            leading: Icon(Icons.photo_library),
+            title: Text('Gallery'),
+            onTap: () {
+              // Do something when gallery option is selected
+            },
+          ),
+        ),
+        PopupMenuItem(
+          child: ListTile(
+            leading: Icon(Icons.music_note),
+            title: Text('Audio'),
+            onTap: () {
+              // Do something when audio option is selected
+            },
+          ),
+        ),
+        PopupMenuItem(
+          child: ListTile(
+            leading: Icon(Icons.location_on),
+            title: Text('Location'),
+            onTap: () {
+              // Do something when location option is selected
+            },
+          ),
+        ),
+        PopupMenuItem(
+          child: ListTile(
+            leading: Icon(Icons.contact_phone),
+            title: Text('Contact'),
+            onTap: () {
+              // Do something when contact option is selected
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 /*import 'dart:ui';
