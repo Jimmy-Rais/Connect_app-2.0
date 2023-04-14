@@ -470,18 +470,18 @@ class _FavoriteSectionState extends State<FavoriteSection> {
     super.initState();
 
     _scrollController = ScrollController();
-    _timer = Timer.periodic(Duration(seconds: 1), (_) {
+    _timer = Timer.periodic(Duration(seconds: 3), (_) {
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.offset) {
         _scrollController.animateTo(
           0.0,
-          duration: Duration(milliseconds: 50),
+          duration: Duration(milliseconds: 600),
           curve: Curves.easeOut,
         );
       } else {
         _scrollController.animateTo(
           _scrollController.offset + _itemWidth + _itemSpacing,
-          duration: Duration(milliseconds: 50),
+          duration: Duration(milliseconds: 600),
           curve: Curves.easeOut,
         );
       }
