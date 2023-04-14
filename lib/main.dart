@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'chat.dart';
 import 'login.dart';
 import 'signin.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -421,7 +423,14 @@ class MenuSection extends StatelessWidget {
   }
 }
 
-class FavoriteSection extends StatelessWidget {
+class FavoriteSection extends StatefulWidget {
+  FavoriteSection({Key? key}) : super(key: key);
+
+  @override
+  State<FavoriteSection> createState() => _FavoriteSectionState();
+}
+
+class _FavoriteSectionState extends State<FavoriteSection> {
   final List FavoriteContacts = [
     {
       'name': 'Jim',
@@ -452,7 +461,39 @@ class FavoriteSection extends StatelessWidget {
       'profile': 'images/avatar/Arnold.jpg',
     },
   ];
-  FavoriteSection({Key? key}) : super(key: key);
+  final double _itemSpacing = 15.0;
+  final double _itemWidth = 70.0;
+  late ScrollController _scrollController;
+  late Timer _timer;
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController = ScrollController();
+    _timer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.offset) {
+        _scrollController.animateTo(
+          0.0,
+          duration: Duration(milliseconds: 50),
+          curve: Curves.easeOut,
+        );
+      } else {
+        _scrollController.animateTo(
+          _scrollController.offset + _itemWidth + _itemSpacing,
+          duration: Duration(milliseconds: 50),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -475,7 +516,27 @@ class FavoriteSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            AnimatedRowScrolling(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = 0.0;
+                          var end = 1.0;
+                          var curve = Curves.ease;
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+                          return ScaleTransition(
+                            scale: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  },
                   child: Text(
                     "STORIES",
                     style: TextStyle(
@@ -546,16 +607,17 @@ class FavoriteSection extends StatelessWidget {
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              controller: _scrollController,
               child: Row(
                 children: FavoriteContacts.map((fav) {
                   return Container(
-                    margin: EdgeInsets.only(left: 15),
+                    margin: EdgeInsets.only(left: _itemSpacing),
                     child: Column(
                       children: [
                         Container(
                           padding: EdgeInsets.all(4),
-                          height: 70,
-                          width: 70,
+                          height: _itemWidth,
+                          width: _itemWidth,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
@@ -803,3 +865,70 @@ class MessageSection extends StatelessWidget {
   }
 }
 // Chat Page
+
+class AnimatedRowScrolling extends StatefulWidget {
+  @override
+  _AnimatedRowScrollingState createState() => _AnimatedRowScrollingState();
+}
+
+class _AnimatedRowScrollingState extends State<AnimatedRowScrolling>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  final double _containerWidth = 100.0;
+  final double _spacing = 16.0;
+  final double _animationDuration = 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: _animationDuration.toInt()),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: _containerWidth,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (BuildContext context, Widget? child) {
+          return Row(
+            children: List.generate(
+              5,
+              (index) {
+                final animationValue = (_controller.value + index / 5) %
+                    1.0; // pour boucler l'animation
+
+                return Padding(
+                  padding: EdgeInsets.only(right: _spacing),
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    width: _containerWidth,
+                    height: _containerWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    transform: Matrix4.translationValues(
+                      -animationValue * _containerWidth,
+                      0,
+                      0,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
