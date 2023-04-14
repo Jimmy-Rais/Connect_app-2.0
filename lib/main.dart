@@ -517,7 +517,7 @@ class _FavoriteSectionState extends State<FavoriteSection> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    /*  Navigator.push(
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation, secondaryAnimation) =>
@@ -535,7 +535,7 @@ class _FavoriteSectionState extends State<FavoriteSection> {
                           );
                         },
                       ),
-                    );
+                    );*/
                   },
                   child: Text(
                     "STORIES",
