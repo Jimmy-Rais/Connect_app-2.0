@@ -231,6 +231,14 @@ class _PopUpContentState extends State<PopUpContent> {
           ),
         ),
         PopupMenuItem(
+            child: ListTile(
+          leading: Icon(Icons.file_copy),
+          title: Text('Document'),
+          onTap: () {
+            // Do something when image option is selected
+          },
+        )),
+        PopupMenuItem(
           child: ListTile(
             leading: Icon(Icons.music_note),
             title: Text('Audio'),
@@ -239,7 +247,7 @@ class _PopUpContentState extends State<PopUpContent> {
             },
           ),
         ),
-        PopupMenuItem(
+        /*PopupMenuItem(
           child: ListTile(
             leading: Icon(Icons.location_on),
             title: Text('Location'),
@@ -247,7 +255,7 @@ class _PopUpContentState extends State<PopUpContent> {
               // Do something when location option is selected
             },
           ),
-        ),
+        ),*/
         PopupMenuItem(
           child: ListTile(
             leading: Icon(Icons.contact_phone),
