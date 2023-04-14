@@ -38,7 +38,7 @@ class _loginState extends State<login> {
         children: [
           AnimatedOpacity(
             opacity: _opacity,
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 300),
             curve: Curves.easeIn,
             child: Container(
               child: Image(image: AssetImage('images/avatar/connect.jpg')),
@@ -50,7 +50,7 @@ class _loginState extends State<login> {
           SizedBox(height: 120),
           AnimatedOpacity(
             opacity: _opacity,
-            duration: Duration(milliseconds: 1500),
+            duration: Duration(milliseconds: 1000),
             curve: Curves.easeIn,
             child: SizedBox(
               height: 80,
@@ -233,13 +233,13 @@ class _loginState extends State<login> {
                     child: AnimatedTextKit(
                       animatedTexts: [
                         TypewriterAnimatedText(
-                          'Welcome to connect',
+                          'Connect with like-minded people,\nshare your thoughts and interests,\nand discover new ideas',
                           textStyle: TextStyle(
-                            fontSize: 18,
+                            fontSize: 12,
                             color: Colors.grey,
                             fontStyle: FontStyle.italic,
                           ),
-                          speed: const Duration(milliseconds: 70),
+                          speed: const Duration(milliseconds: 50),
                         ),
                       ],
                       onTap: () {

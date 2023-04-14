@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
+import 'package:Connect/main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'userid.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -9,7 +9,7 @@ import 'dart:ui';
 import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
+import 'package:Connect/main.dart';
 import 'image_picker.dart';
 import 'image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -105,11 +105,11 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
                               TypewriterAnimatedText(
                                 'Share your passions...\n\nSpread positivity...\n\nConnect with others...\n\n',
                                 textStyle: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   color: Colors.white,
                                   fontStyle: FontStyle.italic,
                                 ),
-                                speed: const Duration(milliseconds: 100),
+                                speed: const Duration(milliseconds: 50),
                               ),
                             ],
                             onTap: () {

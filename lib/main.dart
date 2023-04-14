@@ -67,7 +67,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isDarkMode = false;
+  bool _isDarkMode = true;
 
   late int _lastBackPressedTime;
   Future<bool> _onWillPop() async {

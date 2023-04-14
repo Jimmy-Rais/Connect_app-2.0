@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/signup.dart';
+import 'package:Connect/signup.dart';
 import 'chat.dart';
 import 'main.dart';
 import 'Page.dart';
@@ -81,14 +81,14 @@ class _signinState extends State<signin> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AnimatedOpacity(
+            /* AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 20),
-              curve: Curves.easeIn,
-              child: Container(
-                child: Image(image: AssetImage('images/avatar/connect2.jpg')),
-              ),
+              curve: Curves.easeIn,*/
+            Container(
+              child: Image(image: AssetImage('images/avatar/connect2.jpg')),
             ),
+
             /*Container(
                 child: Image(image: AssetImage('images/avatar/connect2.jpg'))),*/
             SizedBox(height: 35),

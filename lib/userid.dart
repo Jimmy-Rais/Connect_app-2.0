@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
+import 'package:Connect/main.dart';
 import 'image_picker.dart';
 import 'image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

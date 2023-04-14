@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/login.dart';
+import 'package:Connect/login.dart';
 import 'chat.dart';
 import 'main.dart';
 import 'signup.dart';

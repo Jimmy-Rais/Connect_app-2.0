@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/signin.dart';
-import 'package:flutter_application_1/userid.dart';
+import 'package:Connect/signin.dart';
+import 'package:Connect/userid.dart';
 import 'chat.dart';
 import 'main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -56,20 +56,21 @@ class _signupState extends State<signup> {
         child: Column(
           children: [
             SizedBox(height: 150),
-            AnimatedOpacity(
+            /* AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 20),
               curve: Curves.easeIn,
-              child: Container(
-                  child: Text(
-                "Create account",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 73, 43, 7),
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                ),
-              )),
-            ),
+              child:*/
+            Container(
+                child: Text(
+              "Create account",
+              style: TextStyle(
+                color: Color.fromARGB(255, 73, 43, 7),
+                fontSize: 35,
+                fontWeight: FontWeight.bold,
+              ),
+            )),
+
             /* Container(
                 child: Text(
               "Create account",
