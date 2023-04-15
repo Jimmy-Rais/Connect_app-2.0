@@ -20,7 +20,11 @@ import 'image.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-final databaseReference = FirebaseDatabase.instance.reference();
+/*Future<void> getUserData() async {
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
+  final userName = userDoc.data()?['user_name'];
+}*/
 
 class MyState extends ChangeNotifier {
   bool isDarkMode = false;
@@ -78,6 +82,25 @@ class _HomePageState extends State<HomePage> {
     ));
     // Return false to prevent the app from exiting immediately
     return false;
+  }
+
+  late String _userId;
+  late String _username;
+
+  Future<void> _getUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    _userId = user.uid;
+    final userDoc = FirebaseFirestore.instance.collection('Users').doc(_userId);
+    final userData = await userDoc.get();
+    _username = userData['user_name'];
+    print('Logged in as $_username');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
   }
 
   @override
@@ -360,7 +383,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void initState() {
+  void initState2() {
     super.initState();
     // Add a callback to the system back button
     // to call the _onWillPop() method when pressed

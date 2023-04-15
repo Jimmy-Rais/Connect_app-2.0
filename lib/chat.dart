@@ -1,7 +1,14 @@
 import 'dart:ui';
 
+import 'package:Connect/chats.dart';
+import 'package:Connect/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+final CollectionReference messagesCollection =
+    FirebaseFirestore.instance.collection('Messages');
 
 class chatPage extends StatelessWidget {
   const chatPage({Key? key}) : super(key: key);
@@ -159,23 +166,121 @@ class _BottomsectionState extends State<Bottomsection> {
 }
 
 //Chatting section
-class chattingSection extends StatelessWidget {
+class chattingSection extends StatefulWidget {
   const chattingSection({Key? key}) : super(key: key);
 
   @override
+  State<chattingSection> createState() => _chattingSectionState();
+}
+
+class _chattingSectionState extends State<chattingSection> {
+  final List Messages = [];
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40),
-          topRight: Radius.circular(40),
+        padding: EdgeInsets.only(bottom: 10),
+        // height: double.infinity,
+        width: 280,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40),
+            topRight: Radius.circular(40),
+          ),
         ),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: messagesCollection.snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text('Loading...');
+            }
+
+            return ListView.builder(
+              reverse: true,
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                final messages = snapshot.data!.docs;
+                final sortedMessages = messages
+                    .where((doc) => doc['timestamp'] != null)
+                    .toList() // filter out documents with null timestamps
+                  ..sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
+                if (index >= sortedMessages.length) {
+                  // handle case where index is out of range
+                  return Container();
+                }
+                final message = sortedMessages[index];
+                final timestamp = message['timestamp'] as Timestamp;
+                final dateTime = timestamp.toDate();
+                final formattedDateTime =
+                    DateFormat('hh:mm a').format(dateTime);
+                /* itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                final message = snapshot.data!.docs[index];*/
+                return ListTile(
+                    title: Container(
+                        constraints: BoxConstraints(
+                            minWidth: 10,
+                            maxWidth: double.infinity,
+                            minHeight: 45,
+                            maxHeight: double.infinity),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
+                          ),
+                          color: Color.fromARGB(173, 2, 32, 48),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  message['message'],
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 170),
+                                      child: Text(
+                                        formattedDateTime,
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.grey,
+                                      size: 10,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ) /*FittedBox(
+                      fit: BoxFit.none, // BoxFit.scaleDown,
+                      child: Text(
+                        message['message'],
+                        style: TextStyle(color: Colors.white),
+                      )),*/
+                        //subtitle: Text(message['body']),
+                        ));
+              },
+            );
+          },
+        )
+/*Column(
           children: [
             SizedBox(height: 10),
             Text(
@@ -187,20 +292,22 @@ class chattingSection extends StatelessWidget {
             ),
             SizedBox(height: 50),
           ],
-        ),
-      ),
-    );
+        ),*/
+        );
   }
 }
 
+//Write data on cloud Firestore
 Future sendMsg({required String msg}) async {
   final docUser = FirebaseFirestore.instance.collection('Messages').doc();
   final json = {
     'message': msg,
+    'timestamp': FieldValue.serverTimestamp(),
   };
   await docUser.set(json);
 }
 
+//Read data
 class PopUpContent extends StatefulWidget {
   @override
   _PopUpContentState createState() => _PopUpContentState();
