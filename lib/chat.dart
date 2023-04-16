@@ -16,16 +16,15 @@ class chatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(219, 7, 44, 66),
         leadingWidth: 150,
         leading: Row(children: [
           IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Color.fromARGB(255, 99, 178, 223),
+              color: Colors.white,
               size: 25,
             ),
             onPressed: () {
@@ -65,7 +64,7 @@ class chatPage extends StatelessWidget {
           IconButton(
             icon: Icon(
               Icons.call,
-              color: Color.fromARGB(255, 99, 178, 223),
+              color: Colors.white,
               size: 23,
             ),
             onPressed: () {},
@@ -96,72 +95,88 @@ class _BottomsectionState extends State<Bottomsection> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      elevation: 15,
-      child: Container(
-        padding: EdgeInsets.all(20),
-        color: Colors.white,
-        child: Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  showMenu(
-                    context: context,
-                    position: RelativeRect.fromLTRB(
-                        0,
-                        MediaQuery.of(context).size.height / 2,
-                        0,
-                        MediaQuery.of(context).size.height / 2),
-                    items: [
-                      PopupMenuItem(
-                        child: PopUpContent(),
+        elevation: 15,
+        child: Stack(children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Color.fromARGB(219, 7, 44, 66),
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: IconButton(
+                      onPressed: () {
+                        showMenu(
+                          context: context,
+                          position: RelativeRect.fromLTRB(
+                              0,
+                              MediaQuery.of(context).size.height / 2,
+                              0,
+                              MediaQuery.of(context).size.height / 2),
+                          items: [
+                            PopupMenuItem(
+                              child: PopUpContent(),
+                            ),
+                          ],
+                        );
+                      },
+                      icon: Icon(Icons.attachment,
+                          size: 30, color: Colors.white)),
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: TextField(
+                    autofocus: false,
+                    controller: controller,
+                    decoration: InputDecoration(
+                      filled: true, //<-- SEE HERE
+                      fillColor: Colors.white,
+                      hintText: '      Say hi...',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          sendMsg(msg: msg);
+                          print(msg);
+                        },
+                        icon: Icon(
+                          Icons.send,
+                          color: Color.fromARGB(255, 99, 178, 223),
+                        ),
                       ),
-                    ],
-                  );
-                },
-                icon: Icon(Icons.attachment,
-                    size: 30, color: Color.fromARGB(255, 99, 178, 223))),
-            Expanded(
-              child: TextField(
-                autofocus: false,
-                controller: controller,
-                decoration: InputDecoration(
-                  hintText: '      Say hi...',
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      sendMsg(msg: msg);
-                      print(msg);
+                      //prefixIcon:
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18)),
+                    ),
+                    onChanged: (String msg) {
+                      getMsg(msg);
                     },
-                    icon: Icon(
-                      Icons.send,
+                  ),
+                )),
+                SizedBox(width: 8),
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
                       color: Color.fromARGB(255, 99, 178, 223),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.keyboard_voice_outlined,
+                      color: Colors.white,
                     ),
                   ),
-                  //prefixIcon:
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18)),
                 ),
-                onChanged: (String msg) {
-                  getMsg(msg);
-                },
-              ),
+              ],
             ),
-            SizedBox(width: 8),
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 99, 178, 223),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.keyboard_voice_outlined,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ]));
   }
 }
 
@@ -177,52 +192,66 @@ class _chattingSectionState extends State<chattingSection> {
   final List Messages = [];
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.only(bottom: 10),
-        // height: double.infinity,
-        width: 280,
+    return Scaffold(
+        body: Stack(children: <Widget>[
+      Container(
+        height: 850,
+        width: 2000,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(40),
-            topRight: Radius.circular(40),
+          image: DecorationImage(
+            image: AssetImage("images/avatar/wal.jpeg"),
+            fit: BoxFit.cover,
           ),
         ),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: messagesCollection.snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Something went wrong');
-            }
+        //child: Image(image: AssetImage("images/avatar/home.jpeg")),
+      ),
+      Container(
+          padding: EdgeInsets.only(bottom: 10),
+          // height: double.infinity,
+          width: 280,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+          ),
+          child: StreamBuilder<QuerySnapshot>(
+            stream: messagesCollection.snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong');
+              }
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text('Loading...');
-            }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text('Loading...');
+              }
 
-            return ListView.builder(
-              reverse: true,
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final messages = snapshot.data!.docs;
-                final sortedMessages = messages
-                    .where((doc) => doc['timestamp'] != null)
-                    .toList() // filter out documents with null timestamps
-                  ..sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
-                if (index >= sortedMessages.length) {
-                  // handle case where index is out of range
-                  return Container();
-                }
-                final message = sortedMessages[index];
-                final timestamp = message['timestamp'] as Timestamp;
-                final dateTime = timestamp.toDate();
-                final formattedDateTime =
-                    DateFormat('hh:mm a').format(dateTime);
-                /* itemCount: snapshot.data!.docs.length,
+              return ListView.builder(
+                reverse: true,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final messages = snapshot.data!.docs;
+                  final sortedMessages = messages
+                      .where((doc) => doc['timestamp'] != null)
+                      .toList() // filter out documents with null timestamps
+                    ..sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
+                  if (index >= sortedMessages.length) {
+                    // handle case where index is out of range
+                    return Container();
+                  }
+                  final message = sortedMessages[index];
+                  final timestamp = message['timestamp'] as Timestamp;
+                  final dateTime = timestamp.toDate();
+                  final formattedDateTime =
+                      DateFormat('MMMM dd,hh:mm a').format(dateTime);
+                  /* itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 final message = snapshot.data!.docs[index];*/
-                return ListTile(
-                    title: Container(
+                  return ListTile(
+                      title: Stack(children: <Widget>[
+                    Container(
                         constraints: BoxConstraints(
                             minWidth: 10,
                             maxWidth: double.infinity,
@@ -234,7 +263,7 @@ class _chattingSectionState extends State<chattingSection> {
                             topRight: Radius.circular(15),
                             bottomRight: Radius.circular(15),
                           ),
-                          color: Color.fromARGB(173, 2, 32, 48),
+                          color: Color.fromARGB(255, 2, 32, 48),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
@@ -245,15 +274,16 @@ class _chattingSectionState extends State<chattingSection> {
                                   message['message'],
                                   style: TextStyle(color: Colors.white),
                                 ),
+                                SizedBox(height: 5),
                                 Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 170),
+                                      padding: const EdgeInsets.only(left: 140),
                                       child: Text(
                                         formattedDateTime,
                                         style: TextStyle(
                                           color: Colors.grey,
-                                          fontSize: 12,
+                                          fontSize: 10,
                                         ),
                                       ),
                                     ),
@@ -275,11 +305,12 @@ class _chattingSectionState extends State<chattingSection> {
                         style: TextStyle(color: Colors.white),
                       )),*/
                         //subtitle: Text(message['body']),
-                        ));
-              },
-            );
-          },
-        )
+                        ),
+                  ]));
+                },
+              );
+            },
+          )
 /*Column(
           children: [
             SizedBox(height: 10),
@@ -293,7 +324,8 @@ class _chattingSectionState extends State<chattingSection> {
             SizedBox(height: 50),
           ],
         ),*/
-        );
+          )
+    ]));
   }
 }
 

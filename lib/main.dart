@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
   late String _userId;
   late String _username;
 
-  Future<void> _getUserData() async {
+  /* Future<void> _getUserData() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
     _userId = user.uid;
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _getUserData();
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
