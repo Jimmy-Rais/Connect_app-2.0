@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Connect/stories.dart';
 import 'package:flutter/material.dart';
 import 'chat.dart';
 import 'login.dart';
@@ -560,13 +561,35 @@ class _FavoriteSectionState extends State<FavoriteSection> {
                       ),
                     );*/
                   },
-                  child: Text(
-                    "STORIES",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  Stories(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var begin = 0.0;
+                            var end = 1.0;
+                            var curve = Curves.ease;
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            return ScaleTransition(
+                              scale: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Text("STORIES",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        )),
                   ),
                 ),
                 SizedBox(width: 180),
