@@ -233,6 +233,27 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(fontSize: 12, color: Colors.grey)),
               ),
               ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MyStories(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        var begin = 0.0;
+                        var end = 1.0;
+                        var curve = Curves.ease;
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
+                        return ScaleTransition(
+                          scale: animation.drive(tween),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
                 leading: Icon(
                   Icons.filter_1_outlined,
                 ),
@@ -568,7 +589,7 @@ class _FavoriteSectionState extends State<FavoriteSection> {
                         PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  Stories(),
+                                  MyStories(),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                             var begin = 0.0;
@@ -817,7 +838,6 @@ class MessageSection extends StatelessWidget {
                     width: 60,
                     margin: EdgeInsets.only(right: 25),
                     decoration: BoxDecoration(
-                      color: Colors.green,
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.cover,

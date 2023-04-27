@@ -88,7 +88,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
                     ? Image.file(_image!, fit: BoxFit.cover)
                     : Container(
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(51, 158, 158, 158),
+                          color: Colors.white,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20)),
@@ -106,7 +106,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
                                 'Share your passions...\n\nSpread positivity...\n\nConnect with others...\n\n',
                                 textStyle: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontStyle: FontStyle.italic,
                                 ),
                                 speed: const Duration(milliseconds: 50),
