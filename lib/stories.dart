@@ -349,42 +349,55 @@ class _StoryDetailsPageState extends State<StoryDetailsPage> {
         widget.storySnapshot.data()! as Map<String, dynamic>;
     final String photoUrl = data['photo_url'];
     final String caption = data['caption'];
-
+    final String userId = data['userid'];
+    FirebaseFirestore.instance.collection('Users').doc(userId).get();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Story Details'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GestureDetector(
+      backgroundColor: Color.fromARGB(219, 7, 44, 66),
+      /*  appBar: AppBar(
+        title: Text(''),
+      ),*/
+      body: Stack(
+        children: <Widget>[
+          Container(
+            height: double.infinity,
+            /* child: GestureDetector(
               onTap: () {
                 // Close the full screen when the image is tapped
                 Navigator.of(context).pop();
-              },
-              child: Image.network(
-                photoUrl,
-                fit: BoxFit.cover,
+              },*/
+            child: Image.network(
+              photoUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            right: 130,
+            top: 670,
+            child: Container(
+              child: Text(
+                caption,
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
               ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(16.0),
+          Positioned(
+            right: 170,
+            top: 720,
             child: Text(
-              caption,
-              style: TextStyle(fontSize: 18.0),
+              "Reply",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
+            /*child: TextField(
               decoration: InputDecoration(
                 hintText: 'Type your reaction here...',
                 border: OutlineInputBorder(),
               ),
               maxLines: 3,
               // TODO: Implement the logic to post the reaction
-            ),
+            ),*/
           ),
         ],
       ),

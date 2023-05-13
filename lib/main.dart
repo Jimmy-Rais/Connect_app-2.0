@@ -20,7 +20,7 @@ import 'image_picker.dart';
 import 'image.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
+import 'AllUsers.dart';
 /*Future<void> getUserData() async {
   final userId = FirebaseAuth.instance.currentUser?.uid;
   final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
@@ -205,6 +205,27 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ))),
               ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          AllUsersWidget(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        var begin = 0.0;
+                        var end = 1.0;
+                        var curve = Curves.ease;
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
+                        return ScaleTransition(
+                          scale: animation.drive(tween),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
                 leading: Icon(
                   Icons.contact_page_rounded,
                 ),
@@ -343,6 +364,28 @@ class _HomePageState extends State<HomePage> {
               items: [
                 PopupMenuItem(
                   child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  AllUsersWidget(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var begin = 0.0;
+                            var end = 1.0;
+                            var curve = Curves.ease;
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            return ScaleTransition(
+                              scale: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
                     leading: Icon(
                       Icons.edit,
                       color: _isDarkMode
