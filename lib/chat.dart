@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+final currentUser = FirebaseAuth.instance.currentUser;
+final userId = currentUser?.uid ?? '';
 final CollectionReference messagesCollection =
     FirebaseFirestore.instance.collection('Messages');
 
@@ -139,7 +141,7 @@ class _BottomsectionState extends State<Bottomsection> {
                       hintText: '      Say hi...',
                       suffixIcon: IconButton(
                         onPressed: () {
-                          sendMsg(msg: msg);
+                          sendMsg(msg: msg, userId: userId);
                           print(msg);
                         },
                         icon: Icon(
@@ -330,11 +332,12 @@ class _chattingSectionState extends State<chattingSection> {
 }
 
 //Write data on cloud Firestore
-Future sendMsg({required String msg}) async {
+Future sendMsg({required String msg, required String userId}) async {
   final docUser = FirebaseFirestore.instance.collection('Messages').doc();
   final json = {
     'message': msg,
     'timestamp': FieldValue.serverTimestamp(),
+    'user_id': userId,
   };
   await docUser.set(json);
 }

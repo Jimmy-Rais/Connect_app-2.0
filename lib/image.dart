@@ -16,6 +16,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+/*class YourClass {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<String> getUserName() async {
+    User user = FirebaseAuth.instance.currentUser!;
+    if (user != null) {
+      DocumentSnapshot snapshot = await _firestore.collection('Users').doc(user.uid).get();
+      if (snapshot.exists) {
+        return snapshot.data()?.['user_name'] ?? '';
+      } else {
+        throw Exception('User data not found');
+      }
+    } else {
+      throw Exception('User is not logged in');
+    }
+  }
+}*/
+final currentUser = FirebaseAuth.instance.currentUser;
+final userId = currentUser?.uid ?? '';
 
 class ImagePickerWidget1 extends StatefulWidget {
   @override
@@ -195,7 +217,11 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
               IconButton(
                   onPressed: () {
                     _createStoriesWithPhoto;
-                    createStories(caption: caption, photo: _image!);
+                    createStories(
+                      caption: caption,
+                      photo: _image!,
+                      userId: userId,
+                    );
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HomePage()));
                   },
@@ -215,6 +241,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
       await createStories(
         caption: caption,
         photo: _image!,
+        userId: userId,
       );
     } else {
       // Show an error message if no image was selected
@@ -236,7 +263,11 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
     }
   }
 
-  Future createStories({required String caption, required File photo}) async {
+  Future createStories({
+    required String caption,
+    required File photo,
+    required String userId,
+  }) async {
     String fileName = path.basename(_image!.path);
     final storageRef = firebase_storage.FirebaseStorage.instance
         .ref()
@@ -249,6 +280,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
     final json = {
       'caption': caption,
       'photo_url': downloadURL,
+      'userid': userId,
+      'date': FieldValue.serverTimestamp(),
     };
     await docUser.set(json);
   }

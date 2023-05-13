@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class userid extends StatefulWidget {
   const userid({super.key});
@@ -232,12 +233,33 @@ class _useridState extends State<userid> {
     final downloadURL = await storageRef.getDownloadURL();
 
     // Save the user data and photo download URL to Firestore
-    final docUser = FirebaseFirestore.instance.collection('Users').doc();
+    /*final docUser = FirebaseFirestore.instance.collection('Users').doc();
     final json = {
       'user_name': user_name,
       'birth_date': birth_date,
       'photo_url': downloadURL,
     };
     await docUser.set(json);
+  }*/
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userId = user.uid; // Get the user ID
+        final docUser = FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId); // Use the user ID as the document ID
+
+        final json = {
+          'user_name': user_name,
+          'birth_date': birth_date,
+          'photo_url': downloadURL,
+        };
+
+        await docUser.set(json);
+      }
+    } catch (error) {
+      // Handle the error
+      print('Error creating user document: $error');
+    }
   }
 }

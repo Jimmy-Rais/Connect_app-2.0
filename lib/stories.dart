@@ -132,7 +132,268 @@ class MyStatut extends StatelessWidget {
   }
 }
 
+/*class Stories extends StatelessWidget {
+  final CollectionReference storiesCollection =
+      FirebaseFirestore.instance.collection('Stories');
+
+  Stories({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+        stream: storiesCollection.snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+            return SingleChildScrollView(
+              child: Column(
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                  final Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  final String photoUrl = data['photo_url'];
+
+                  final Timestamp timestamp = data['date'];
+                  final String userId = data['userid'];
+
+                  return FutureBuilder<DocumentSnapshot>(
+                    future: FirebaseFirestore.instance
+                        .collection('Users')
+                        .doc(userId)
+                        .get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasData && snapshot.data!.exists) {
+                        final Map<String, dynamic> userData =
+                            snapshot.data!.data()! as Map<String, dynamic>;
+                        final String userName = userData['user_name'];
+                        final DateTime date = timestamp.toDate();
+                        final now = DateTime.now();
+
+                        String time = DateFormat.jm().format(date);
+                        if (now.difference(date).inDays == 0) {
+                          time = 'today at $time';
+                        } else if (now.difference(date).inDays == 1) {
+                          time = 'yesterday at $time';
+                        } else if (now.year == date.year) {
+                          time = DateFormat('MMM d').format(date) + ' at $time';
+                        } else {
+                          time =
+                              DateFormat('MMM d, y').format(date) + ' at $time';
+                        }
+*/
 class Stories extends StatelessWidget {
+  final CollectionReference storiesCollection =
+      FirebaseFirestore.instance.collection('Stories');
+
+  Stories({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+        // Order the documents in the collection by the 'date' field in descending order
+        // to display the most recent stories first
+        stream: storiesCollection.orderBy('date', descending: true).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+            return SingleChildScrollView(
+              child: Column(
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                  final Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  final String photoUrl = data['photo_url'];
+
+                  final Timestamp timestamp = data['date'];
+                  final String userId = data['userid'];
+
+                  final DateTime date = timestamp.toDate();
+                  final now = DateTime.now();
+
+                  // Calculate the time difference between the current time and the story's date
+                  final diff = now.difference(date);
+
+                  // If the story is older than 24 hours, skip it
+                  if (diff.inDays >= 1) {
+                    return Container();
+                  }
+
+                  return FutureBuilder<DocumentSnapshot>(
+                    future: FirebaseFirestore.instance
+                        .collection('Users')
+                        .doc(userId)
+                        .get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasData && snapshot.data!.exists) {
+                        final Map<String, dynamic> userData =
+                            snapshot.data!.data()! as Map<String, dynamic>;
+                        final String userName = userData['user_name'];
+
+                        String time = DateFormat.jm().format(date);
+                        if (diff.inDays == 0) {
+                          time = 'today at $time';
+                        } else if (diff.inDays == 1) {
+                          time = 'yesterday at $time';
+                        } else if (now.year == date.year) {
+                          time = DateFormat('MMM d').format(date) + ' at $time';
+                        } else {
+                          time =
+                              DateFormat('MMM d, y').format(date) + ' at $time';
+                        }
+                        return InkWell(
+                          onTap: () => {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    StoryDetailsPage(storySnapshot: document))),
+                          },
+                          splashColor: Color.fromARGB(255, 99, 178, 223),
+                          child: Container(
+                            padding:
+                                EdgeInsets.only(left: 25, right: 10, top: 25),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  padding: EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(219, 7, 44, 66),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: CircleAvatar(
+                                    radius: 25,
+                                    backgroundImage: NetworkImage(photoUrl),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 18,
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(height: 15),
+                                            Text(
+                                              userName,
+                                              style: TextStyle(
+                                                color: Colors.blueGrey,
+                                                fontStyle: FontStyle.italic,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 13,
+                                            ),
+                                            Wrap(
+                                              children: [
+                                                Text(
+                                                  time,
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20),
+                                    Container(
+                                      height: 1.2,
+                                      color: Colors.grey,
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  );
+                }).toList(),
+              ),
+            );
+          } else {
+            return Center(child: Text('No stories found.'));
+          }
+        },
+      ),
+    );
+  }
+}
+
+class StoryDetailsPage extends StatefulWidget {
+  final DocumentSnapshot storySnapshot;
+
+  const StoryDetailsPage({Key? key, required this.storySnapshot})
+      : super(key: key);
+
+  @override
+  _StoryDetailsPageState createState() => _StoryDetailsPageState();
+}
+
+class _StoryDetailsPageState extends State<StoryDetailsPage> {
+  @override
+  Widget build(BuildContext context) {
+    final Map<String, dynamic> data =
+        widget.storySnapshot.data()! as Map<String, dynamic>;
+    final String photoUrl = data['photo_url'];
+    final String caption = data['caption'];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Story Details'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                // Close the full screen when the image is tapped
+                Navigator.of(context).pop();
+              },
+              child: Image.network(
+                photoUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              caption,
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(16.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Type your reaction here...',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
+              // TODO: Implement the logic to post the reaction
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+/*class Stories extends StatelessWidget {
   final List MyStories = [
     {
       'id_name': 'Jimmy',
@@ -315,6 +576,6 @@ class Stories extends StatelessWidget {
           );
         }).toList(),
       ),
-    ));
+    ));   
   }
-}
+}*/
