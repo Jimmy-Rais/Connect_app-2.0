@@ -190,6 +190,7 @@ class Stories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[800],
       body: StreamBuilder<QuerySnapshot>(
         // Order the documents in the collection by the 'date' field in descending order
         // to display the most recent stories first
