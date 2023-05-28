@@ -110,7 +110,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
                     ? Image.file(_image!, fit: BoxFit.cover)
                     : Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.grey[800],
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20)),
@@ -128,7 +128,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
                                 'Share your passions...\n\nSpread positivity...\n\nConnect with others...\n\n',
                                 textStyle: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontStyle: FontStyle.italic,
                                 ),
                                 speed: const Duration(milliseconds: 50),
@@ -274,7 +274,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
         .child('photos/$fileName');
     await storageRef.putFile(_image!);
     final downloadURL = await storageRef.getDownloadURL();
-
     // Save the user data and photo download URL to Firestore
     final docUser = FirebaseFirestore.instance.collection('Stories').doc();
     final json = {

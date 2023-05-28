@@ -14,7 +14,7 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         backgroundColor: Color.fromARGB(219, 7, 44, 66),
         title: Text(

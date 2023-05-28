@@ -352,7 +352,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromARGB(255, 99, 178, 223),
+          backgroundColor: Color.fromARGB(105, 77, 140, 176),
           onPressed: () {
             showMenu(
               color: _isDarkMode

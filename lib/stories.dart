@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'image.dart';
+import 'image_picker.dart';
 
 final CollectionReference messagesCollection =
     FirebaseFirestore.instance.collection('Messages');
@@ -191,6 +192,34 @@ class Stories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[800],
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(105, 77, 140, 176),
+        onPressed: () => {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  ImagePickerWidget1(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                var begin = 0.0;
+                var end = 1.0;
+                var curve = Curves.ease;
+                var tween = Tween(begin: begin, end: end)
+                    .chain(CurveTween(curve: curve));
+                return ScaleTransition(
+                  scale: animation.drive(tween),
+                  child: child,
+                );
+              },
+            ),
+          )
+        },
+        child: Icon(
+          Icons.add,
+          //color: Color.fromARGB(105, 77, 140, 176),
+        ),
+      ),
       body: StreamBuilder<QuerySnapshot>(
         // Order the documents in the collection by the 'date' field in descending order
         // to display the most recent stories first
