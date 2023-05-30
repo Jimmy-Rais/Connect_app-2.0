@@ -191,7 +191,7 @@ class Stories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Color.fromARGB(208, 0, 0, 0),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(105, 77, 140, 176),
         onPressed: () => {
@@ -287,7 +287,7 @@ class Stories extends StatelessWidget {
                                   width: 60,
                                   padding: EdgeInsets.all(3),
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(219, 7, 44, 66),
+                                    color: Colors.white,
                                     shape: BoxShape.circle,
                                   ),
                                   child: CircleAvatar(

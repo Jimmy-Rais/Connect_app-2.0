@@ -87,6 +87,21 @@ class _HomePageState extends State<HomePage> {
 
   late String _userId;
   late String _username;
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text('Home Page',
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Text('Search Page',
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Text('Profile Page',
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   /* Future<void> _getUserData() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -109,8 +124,9 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        backgroundColor:
-            _isDarkMode ? Colors.grey[800] : Color.fromARGB(255, 245, 245, 245),
+        backgroundColor: _isDarkMode
+            ? Color.fromARGB(73, 66, 66, 66)
+            : Color.fromARGB(255, 245, 245, 245),
         appBar: AppBar(
           backgroundColor: Color.fromARGB(105, 77, 140, 176),
           /*_isDarkMode ? Colors.grey[800] : Colors.grey[100],*/
@@ -149,7 +165,7 @@ class _HomePageState extends State<HomePage> {
         ),
         drawer: Drawer(
           backgroundColor: _isDarkMode
-              ? Colors.grey[800]
+              ? Color.fromRGBO(66, 66, 66, 1)
               : Color.fromARGB(255, 245, 245, 245),
           child: ListView(
             padding: EdgeInsets.zero,
@@ -345,14 +361,57 @@ class _HomePageState extends State<HomePage> {
         ),
         body: Column(
           children: [
-            FavoriteSection(),
+            //FavoriteSection(),
             Expanded(
               child: MessageSection(),
             ),
           ],
         ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30.0),
+                topLeft: Radius.circular(30.0)),
+          ),
+          height: 100,
+          child: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.call,
+                    // color: Color.fromARGB(105, 77, 140, 176),
+                  ),
+                  label: "Call",
+                  backgroundColor: Color.fromARGB(10, 158, 158, 158),
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.chat_bubble_outlined,
+                      //color: Color.fromARGB(105, 77, 140, 176),
+                    ),
+                    label: "Chats",
+                    backgroundColor: Color.fromARGB(10, 158, 158, 158)),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons
+                      .add_a_photo), // color: Color.fromARGB(105, 77, 140, 176)),
+                  label: "Stories",
+                  backgroundColor: Color.fromARGB(2, 158, 158, 158),
+                  //Color.fromARGB(105, 77, 140, 176),
+                ),
+              ],
+              type: BottomNavigationBarType.shifting,
+              currentIndex: _selectedIndex,
+              selectedItemColor:
+                  Colors.white, //Color.fromARGB(105, 77, 140, 176),
+              iconSize: 28,
+              onTap: _onItemTapped,
+              elevation: 5),
+        ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromARGB(105, 77, 140, 176),
+          backgroundColor: _isDarkMode
+              ? Color.fromARGB(255, 77, 140, 176)
+              : Color.fromARGB(
+                  248, 107, 165, 212), //Color.fromARGB(105, 77, 140, 176),
           onPressed: () {
             showMenu(
               color: _isDarkMode
@@ -958,10 +1017,10 @@ class MessageSection extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       // Separating line
-                      Container(
+                      /* Container(
                         height: 1.2,
                         color: Colors.grey,
-                      )
+                      )*/
                     ],
                   ))
                 ],

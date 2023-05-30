@@ -20,7 +20,7 @@ class chatPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
         leadingWidth: 150,
         leading: Row(children: [
           IconButton(
@@ -102,7 +102,7 @@ class _BottomsectionState extends State<Bottomsection> {
           Container(
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.grey[800],
+              color: Color.fromARGB(255, 0, 0, 0),
             ),
             child: Row(
               children: [
@@ -146,7 +146,7 @@ class _BottomsectionState extends State<Bottomsection> {
                         },
                         icon: Icon(
                           Icons.send,
-                          color: Color.fromARGB(255, 99, 178, 223),
+                          color: Color.fromARGB(193, 77, 140, 176),
                         ),
                       ),
                       //prefixIcon:
@@ -166,7 +166,7 @@ class _BottomsectionState extends State<Bottomsection> {
                     height: 50,
                     width: 50,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 99, 178, 223),
+                      color: Color.fromARGB(193, 77, 140, 176),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
