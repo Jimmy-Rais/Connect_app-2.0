@@ -108,7 +108,7 @@ class MyStatut extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.only(top: 17, left: 1),
                   child: Text(
-                    "My Status",
+                    "My Stories",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -120,7 +120,7 @@ class MyStatut extends StatelessWidget {
                 Container(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
-                      "Tap to add status update",
+                      "Tap to add stories updates",
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
@@ -335,13 +335,6 @@ class Stories extends StatelessWidget {
               }
             },
           ),
-          Positioned(
-              bottom: 16,
-              right: 16,
-              child: FloatingActionButton(
-                onPressed: () {},
-                child: Icon(Icons.add),
-              ))
         ]));
   }
 }
