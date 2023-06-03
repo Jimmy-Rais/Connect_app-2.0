@@ -30,12 +30,12 @@ class StoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[800],
-      appBar: AppBar(
+      /*appBar: AppBar(
           backgroundColor: Color.fromARGB(219, 7, 44, 66),
           leading: IconButton(
             onPressed: () {},
             icon: Icon(Icons.more_vert),
-          )),
+          )),*/
       body: Column(
         children: [
           MyStatut(),
@@ -76,14 +76,14 @@ class MyStatut extends StatelessWidget {
         splashColor: Color.fromARGB(255, 99, 178, 223),
         child: Container(
           height: 80,
-          color: Color.fromARGB(219, 7, 44, 66),
+          color: Color.fromARGB(208, 0, 0, 0),
           child: Row(children: [
             SizedBox(width: 21),
             Stack(children: [
               Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: Color.fromARGB(73, 66, 66, 66),
                   shape: BoxShape.circle,
                 ),
                 child: CircleAvatar(
@@ -193,6 +193,7 @@ class Stories extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(208, 0, 0, 0),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'Stories',
         backgroundColor: Color.fromARGB(105, 77, 140, 176),
         onPressed: () => {
           Navigator.push(

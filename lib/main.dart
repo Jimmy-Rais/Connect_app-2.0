@@ -87,7 +87,13 @@ class _HomePageState extends State<HomePage> {
 
   late String _userId;
   late String _username;
-  int _selectedIndex = 0;
+  int _currentIndex = 1;
+
+  List<Widget> _pages = [
+    AllUsersWidget(),
+    MessageSection(),
+    MyStories(),
+  ];
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home Page',
         style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
@@ -96,12 +102,6 @@ class _HomePageState extends State<HomePage> {
     Text('Profile Page',
         style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   /* Future<void> _getUserData() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -124,23 +124,71 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        backgroundColor: _isDarkMode
-            ? Color.fromARGB(73, 66, 66, 66)
-            : Color.fromARGB(255, 245, 245, 245),
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(105, 77, 140, 176),
-          /*_isDarkMode ? Colors.grey[800] : Colors.grey[100],*/
-          leading: Builder(builder: (context) {
-            return IconButton(
-              onPressed: (() => Scaffold.of(context).openDrawer()),
-              icon: const Icon(
-                Icons.menu,
-                size: 30,
-                color: Colors.white,
+        backgroundColor: Color.fromARGB(73, 66, 66, 66),
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60.0),
+            child: AppBar(
+              title: AnimatedTextKit(
+                animatedTexts: [
+                  ScaleAnimatedText('Connect',
+                      textStyle: TextStyle(
+                        fontFamily: 'Canterbury',
+                      )),
+                  ScaleAnimatedText('Connect'),
+                  ScaleAnimatedText('Connect'),
+                ],
+                onTap: () {
+                  print("Tap Event");
+                },
+                repeatForever: true,
               ),
-            );
-          }),
-          actions: [
+              /*Text(
+                "Connect",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+          
+                  fontStyle: FontStyle.italic,
+                ),
+              ),*/
+              backgroundColor: Color.fromARGB(73, 66, 66, 66),
+              /*_isDarkMode ? Colors.grey[800] : Colors.grey[100],*/
+              leading: Center(
+                  child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 5, left: 25),
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundImage: AssetImage('images/avatar/Pierre.jpg'),
+                    ),
+                  ),
+                  /*Container(
+                    padding: EdgeInsets.only(top: 8, left: 15),
+                    child: Text(
+                      "Connect",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  )*/
+                ],
+              )),
+              actions: [
+                Builder(builder: (context) {
+                  return IconButton(
+                    onPressed: (() => Scaffold.of(context).openDrawer()),
+                    icon: const Icon(
+                      Icons.menu,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  );
+                })
+              ],
+              /*actions: [
             Switch(
               value: _isDarkMode,
               onChanged: (value) {
@@ -161,12 +209,10 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
               ),
             ),*/
-          ],
-        ),
+          ],*/
+            )),
         drawer: Drawer(
-          backgroundColor: _isDarkMode
-              ? Color.fromRGBO(66, 66, 66, 1)
-              : Color.fromARGB(255, 245, 245, 245),
+          backgroundColor: Color.fromRGBO(66, 66, 66, 1),
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
@@ -207,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                               padding: EdgeInsets.all(27),
                               child: AvatarGlow(
                                 startDelay: Duration(milliseconds: 1000),
-                                glowColor: Color.fromARGB(255, 194, 14, 14),
+                                glowColor: Colors.white,
                                 endRadius: 80,
                                 showTwoGlows: true,
                                 repeatPauseDuration:
@@ -359,14 +405,18 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: Column(
+        body: IndexedStack(
+          index: _currentIndex,
+          children: _pages,
+        ),
+        /*Column(
           children: [
             //FavoriteSection(),
             Expanded(
               child: MessageSection(),
             ),
           ],
-        ),
+        ),*/
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -400,14 +450,19 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
               type: BottomNavigationBarType.shifting,
-              currentIndex: _selectedIndex,
+              currentIndex: _currentIndex,
               selectedItemColor:
                   Colors.white, //Color.fromARGB(105, 77, 140, 176),
               iconSize: 28,
-              onTap: _onItemTapped,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
               elevation: 5),
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: 'Chats',
           backgroundColor: _isDarkMode
               ? Color.fromARGB(255, 77, 140, 176)
               : Color.fromARGB(

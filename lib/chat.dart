@@ -201,7 +201,7 @@ class _chattingSectionState extends State<chattingSection> {
         width: 2000,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/avatar/wal.jpeg"),
+            image: AssetImage("images/avatar/wal.jpg"),
             fit: BoxFit.cover,
           ),
         ),

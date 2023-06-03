@@ -94,7 +94,7 @@ flutter:
     - images/avatar/connect2.jpg
     - images/avatar/default.jpeg
     - images/avatar/wall.jpeg
-    - images/avatar/wal.jpeg
+    - images/avatar/wal.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
