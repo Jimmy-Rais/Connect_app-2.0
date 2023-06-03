@@ -191,175 +191,158 @@ class Stories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(208, 0, 0, 0),
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'Stories',
-        backgroundColor: Color.fromARGB(105, 77, 140, 176),
-        onPressed: () => {
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  ImagePickerWidget1(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                var begin = 0.0;
-                var end = 1.0;
-                var curve = Curves.ease;
-                var tween = Tween(begin: begin, end: end)
-                    .chain(CurveTween(curve: curve));
-                return ScaleTransition(
-                  scale: animation.drive(tween),
-                  child: child,
-                );
-              },
-            ),
-          )
-        },
-        child: Icon(
-          Icons.add,
-          //color: Color.fromARGB(105, 77, 140, 176),
-        ),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        // Order the documents in the collection by the 'date' field in descending order
-        // to display the most recent stories first
-        stream: storiesCollection.orderBy('date', descending: true).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-            return SingleChildScrollView(
-              child: Column(
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  final Map<String, dynamic> data =
-                      document.data()! as Map<String, dynamic>;
-                  final String photoUrl = data['photo_url'];
+        backgroundColor: Color.fromARGB(208, 0, 0, 0),
+        body: Stack(children: [
+          StreamBuilder<QuerySnapshot>(
+            // Order the documents in the collection by the 'date' field in descending order
+            // to display the most recent stories first
+            stream:
+                storiesCollection.orderBy('date', descending: true).snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                return SingleChildScrollView(
+                  child: Column(
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      final Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      final String photoUrl = data['photo_url'];
 
-                  final Timestamp timestamp = data['date'];
-                  final String userId = data['userid'];
+                      final Timestamp timestamp = data['date'];
+                      final String userId = data['userid'];
 
-                  final DateTime date = timestamp.toDate();
-                  final now = DateTime.now();
+                      final DateTime date = timestamp.toDate();
+                      final now = DateTime.now();
 
-                  // Calculate the time difference between the current time and the story's date
-                  final diff = now.difference(date);
+                      // Calculate the time difference between the current time and the story's date
+                      final diff = now.difference(date);
 
-                  // If the story is older than 24 hours, skip it
-                  if (diff.inDays >= 1) {
-                    return Container();
-                  }
-
-                  return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collection('Users')
-                        .doc(userId)
-                        .get(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.hasData && snapshot.data!.exists) {
-                        final Map<String, dynamic> userData =
-                            snapshot.data!.data()! as Map<String, dynamic>;
-                        final String userName = userData['user_name'];
-
-                        String time = DateFormat.jm().format(date);
-                        if (diff.inDays == 0) {
-                          time = 'today at $time';
-                        } else if (diff.inDays == 1) {
-                          time = 'yesterday at $time';
-                        } else if (now.year == date.year) {
-                          time = DateFormat('MMM d').format(date) + ' at $time';
-                        } else {
-                          time =
-                              DateFormat('MMM d, y').format(date) + ' at $time';
-                        }
-                        return InkWell(
-                          onTap: () => {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    StoryDetailsPage(storySnapshot: document))),
-                          },
-                          splashColor: Color.fromARGB(255, 99, 178, 223),
-                          child: Container(
-                            padding:
-                                EdgeInsets.only(left: 25, right: 10, top: 25),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 60,
-                                  width: 60,
-                                  padding: EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage: NetworkImage(photoUrl),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 18,
-                                ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(height: 15),
-                                            Text(
-                                              userName,
-                                              style: TextStyle(
-                                                color: Colors.blueGrey,
-                                                fontStyle: FontStyle.italic,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 13,
-                                            ),
-                                            Wrap(
-                                              children: [
-                                                Text(
-                                                  time,
-                                                  style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    Container(
-                                      height: 1.2,
-                                      color: Colors.grey,
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      } else {
+                      // If the story is older than 24 hours, skip it
+                      if (diff.inDays >= 1) {
                         return Container();
                       }
-                    },
-                  );
-                }).toList(),
-              ),
-            );
-          } else {
-            return Center(child: Text('No stories found.'));
-          }
-        },
-      ),
-    );
+
+                      return FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(userId)
+                            .get(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasData && snapshot.data!.exists) {
+                            final Map<String, dynamic> userData =
+                                snapshot.data!.data()! as Map<String, dynamic>;
+                            final String userName = userData['user_name'];
+
+                            String time = DateFormat.jm().format(date);
+                            if (diff.inDays == 0) {
+                              time = 'today at $time';
+                            } else if (diff.inDays == 1) {
+                              time = 'yesterday at $time';
+                            } else if (now.year == date.year) {
+                              time = DateFormat('MMM d').format(date) +
+                                  ' at $time';
+                            } else {
+                              time = DateFormat('MMM d, y').format(date) +
+                                  ' at $time';
+                            }
+                            return InkWell(
+                              onTap: () => {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => StoryDetailsPage(
+                                        storySnapshot: document))),
+                              },
+                              splashColor: Color.fromARGB(255, 99, 178, 223),
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    left: 25, right: 10, top: 25),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width: 60,
+                                      padding: EdgeInsets.all(3),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 25,
+                                        backgroundImage: NetworkImage(photoUrl),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 18,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(height: 15),
+                                                Text(
+                                                  userName,
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey,
+                                                    fontStyle: FontStyle.italic,
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 13,
+                                                ),
+                                                Wrap(
+                                                  children: [
+                                                    Text(
+                                                      time,
+                                                      style: TextStyle(
+                                                        color: Colors.grey,
+                                                        fontSize: 13,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 20),
+                                        Container(
+                                          height: 1.2,
+                                          color: Colors.grey,
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      );
+                    }).toList(),
+                  ),
+                );
+              } else {
+                return Center(child: Text('No stories found.'));
+              }
+            },
+          ),
+          Positioned(
+              bottom: 16,
+              right: 16,
+              child: FloatingActionButton(
+                onPressed: () {},
+                child: Icon(Icons.add),
+              ))
+        ]));
   }
 }
 

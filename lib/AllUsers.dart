@@ -22,6 +22,7 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
           style: TextStyle(fontSize: 18),
         ),
       ),*/
+      floatingActionButton: null,
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection('Users').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

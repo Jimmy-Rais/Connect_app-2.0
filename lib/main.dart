@@ -13,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Page.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
+import 'package:speed_dial_fab/speed_dial_fab.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'chats.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +22,7 @@ import 'image.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'AllUsers.dart';
+import 'Pick.dart';
 /*Future<void> getUserData() async {
   final userId = FirebaseAuth.instance.currentUser?.uid;
   final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
@@ -94,6 +96,7 @@ class _HomePageState extends State<HomePage> {
     MessageSection(),
     MyStories(),
   ];
+
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home Page',
         style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
@@ -122,27 +125,27 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        backgroundColor: Color.fromARGB(73, 66, 66, 66),
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60.0),
-            child: AppBar(
-              title: AnimatedTextKit(
-                animatedTexts: [
-                  ScaleAnimatedText('Connect',
-                      textStyle: TextStyle(
-                        fontFamily: 'Canterbury',
-                      )),
-                  ScaleAnimatedText('Connect'),
-                  ScaleAnimatedText('Connect'),
-                ],
-                onTap: () {
-                  print("Tap Event");
-                },
-                repeatForever: true,
-              ),
-              /*Text(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          backgroundColor: Color.fromARGB(73, 66, 66, 66),
+          appBar: PreferredSize(
+              preferredSize: Size.fromHeight(60.0),
+              child: AppBar(
+                title: AnimatedTextKit(
+                  animatedTexts: [
+                    ScaleAnimatedText('Connect',
+                        textStyle: TextStyle(
+                          fontFamily: 'Canterbury',
+                        )),
+                    ScaleAnimatedText('Connect'),
+                    ScaleAnimatedText('Connect'),
+                  ],
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                  repeatForever: true,
+                ),
+                /*Text(
                 "Connect",
                 style: TextStyle(
                   color: Colors.white,
@@ -151,19 +154,19 @@ class _HomePageState extends State<HomePage> {
                   fontStyle: FontStyle.italic,
                 ),
               ),*/
-              backgroundColor: Color.fromARGB(73, 66, 66, 66),
-              /*_isDarkMode ? Colors.grey[800] : Colors.grey[100],*/
-              leading: Center(
-                  child: Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 5, left: 25),
-                    child: CircleAvatar(
-                      radius: 15,
-                      backgroundImage: AssetImage('images/avatar/Pierre.jpg'),
+                backgroundColor: Color.fromARGB(73, 66, 66, 66),
+                /*_isDarkMode ? Colors.grey[800] : Colors.grey[100],*/
+                leading: Center(
+                    child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 5, left: 25),
+                      child: CircleAvatar(
+                        radius: 15,
+                        backgroundImage: AssetImage('images/avatar/Pierre.jpg'),
+                      ),
                     ),
-                  ),
-                  /*Container(
+                    /*Container(
                     padding: EdgeInsets.only(top: 8, left: 15),
                     child: Text(
                       "Connect",
@@ -174,21 +177,21 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   )*/
+                  ],
+                )),
+                actions: [
+                  Builder(builder: (context) {
+                    return IconButton(
+                      onPressed: (() => Scaffold.of(context).openDrawer()),
+                      icon: const Icon(
+                        Icons.menu,
+                        size: 30,
+                        color: Colors.white,
+                      ),
+                    );
+                  })
                 ],
-              )),
-              actions: [
-                Builder(builder: (context) {
-                  return IconButton(
-                    onPressed: (() => Scaffold.of(context).openDrawer()),
-                    icon: const Icon(
-                      Icons.menu,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  );
-                })
-              ],
-              /*actions: [
+                /*actions: [
             Switch(
               value: _isDarkMode,
               onChanged: (value) {
@@ -210,188 +213,189 @@ class _HomePageState extends State<HomePage> {
               ),
             ),*/
           ],*/
-            )),
-        drawer: Drawer(
-          backgroundColor: Color.fromRGBO(66, 66, 66, 1),
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              SizedBox(
-                  height: 320,
-                  child: DrawerHeader(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(105, 77, 140, 176),
-                        /*Color.fromARGB(255, 99, 178, 223),*/
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                              padding: EdgeInsets.only(top: 2, right: 50),
-                              child: Row(children: [
-                                Text(
-                                  "User : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                AnimatedTextKit(
-                                  animatedTexts: [
-                                    TypewriterAnimatedText(
-                                      'Jimmy Rais',
-                                      textStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      speed: const Duration(milliseconds: 200),
+              )),
+          drawer: Drawer(
+            backgroundColor: Color.fromRGBO(66, 66, 66, 1),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                SizedBox(
+                    height: 320,
+                    child: DrawerHeader(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(105, 77, 140, 176),
+                          /*Color.fromARGB(255, 99, 178, 223),*/
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                                padding: EdgeInsets.only(top: 2, right: 50),
+                                child: Row(children: [
+                                  Text(
+                                    "User : ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
+                                  ),
+                                  AnimatedTextKit(
+                                    animatedTexts: [
+                                      TypewriterAnimatedText(
+                                        'Jimmy Rais',
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        speed:
+                                            const Duration(milliseconds: 200),
+                                      ),
+                                    ],
+                                  ),
+                                ])),
+                            Container(
+                                padding: EdgeInsets.all(27),
+                                child: AvatarGlow(
+                                  startDelay: Duration(milliseconds: 1000),
+                                  glowColor: Colors.white,
+                                  endRadius: 80,
+                                  showTwoGlows: true,
+                                  repeatPauseDuration:
+                                      Duration(milliseconds: 100),
+                                  child: CircleAvatar(
+                                    radius: 55,
+                                    backgroundImage:
+                                        AssetImage('images/avatar/Pierre.jpg'),
+                                  ),
+                                ))
+                          ],
+                        ))),
+                ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            AllUsersWidget(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = 0.0;
+                          var end = 1.0;
+                          var curve = Curves.ease;
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+                          return ScaleTransition(
+                            scale: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  leading: Icon(
+                    Icons.contact_page_rounded,
+                  ),
+                  title: const Text('Contacts',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.group,
+                  ),
+                  title: const Text('Groups',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.remove_red_eye,
+                  ),
+                  title: const Text('Online Contacts',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.call,
+                  ),
+                  title: const Text('Calls History',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            MyStories(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = 0.0;
+                          var end = 1.0;
+                          var curve = Curves.ease;
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+                          return ScaleTransition(
+                            scale: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  leading: Icon(
+                    Icons.filter_1_outlined,
+                  ),
+                  title: const Text('Stories',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.settings,
+                  ),
+                  title: const Text('Settings',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                ),
+                ListTile(
+                  onTap: () {
+                    showPlatformDialog(
+                        context: context,
+                        builder: ((context) => BasicDialogAlert(
+                              title: Text('Log out?',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey)),
+                              content: Text('Action cannot be undone',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey)),
+                              actions: <Widget>[
+                                BasicDialogAction(
+                                  title: Text('Cancel',
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.grey)),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                              ])),
-                          Container(
-                              padding: EdgeInsets.all(27),
-                              child: AvatarGlow(
-                                startDelay: Duration(milliseconds: 1000),
-                                glowColor: Colors.white,
-                                endRadius: 80,
-                                showTwoGlows: true,
-                                repeatPauseDuration:
-                                    Duration(milliseconds: 100),
-                                child: CircleAvatar(
-                                  radius: 55,
-                                  backgroundImage:
-                                      AssetImage('images/avatar/Pierre.jpg'),
+                                BasicDialogAction(
+                                  title: Text('Yes',
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.grey)),
+                                  onPressed: () {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (_) => login()));
+                                    FirebaseAuth.instance.signOut();
+                                  },
                                 ),
-                              ))
-                        ],
-                      ))),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          AllUsersWidget(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var begin = 0.0;
-                        var end = 1.0;
-                        var curve = Curves.ease;
-                        var tween = Tween(begin: begin, end: end)
-                            .chain(CurveTween(curve: curve));
-                        return ScaleTransition(
-                          scale: animation.drive(tween),
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-                },
-                leading: Icon(
-                  Icons.contact_page_rounded,
+                              ],
+                            )));
+                  },
+                  leading: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.logout_outlined, size: 25),
+                  ),
+                  title: const Text('Log out',
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
                 ),
-                title: const Text('Contacts',
-                    style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.group,
-                ),
-                title: const Text('Groups',
-                    style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.remove_red_eye,
-                ),
-                title: const Text('Online Contacts',
-                    style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.call,
-                ),
-                title: const Text('Calls History',
-                    style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          MyStories(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var begin = 0.0;
-                        var end = 1.0;
-                        var curve = Curves.ease;
-                        var tween = Tween(begin: begin, end: end)
-                            .chain(CurveTween(curve: curve));
-                        return ScaleTransition(
-                          scale: animation.drive(tween),
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-                },
-                leading: Icon(
-                  Icons.filter_1_outlined,
-                ),
-                title: const Text('Stories',
-                    style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.settings,
-                ),
-                title: const Text('Settings',
-                    style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ),
-              ListTile(
-                onTap: () {
-                  showPlatformDialog(
-                      context: context,
-                      builder: ((context) => BasicDialogAlert(
-                            title: Text('Log out?',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.grey)),
-                            content: Text('Action cannot be undone',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.grey)),
-                            actions: <Widget>[
-                              BasicDialogAction(
-                                title: Text('Cancel',
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.grey)),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              BasicDialogAction(
-                                title: Text('Yes',
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.grey)),
-                                onPressed: () {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (_) => login()));
-                                  FirebaseAuth.instance.signOut();
-                                },
-                              ),
-                            ],
-                          )));
-                },
-                leading: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.logout_outlined, size: 25),
-                ),
-                title: const Text('Log out',
-                    style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ),
-              /*ListTile(
+                /*ListTile(
                 leading: IconButton(
                   onPressed: () {
                     SystemNavigator.pop();
@@ -401,15 +405,15 @@ class _HomePageState extends State<HomePage> {
                 title: const Text('Exit',
                     style: TextStyle(fontSize: 12, color: Colors.grey)),
               ),*/
-              SizedBox(height: 60),
-            ],
+                SizedBox(height: 60),
+              ],
+            ),
           ),
-        ),
-        body: IndexedStack(
-          index: _currentIndex,
-          children: _pages,
-        ),
-        /*Column(
+          body: IndexedStack(
+            index: _currentIndex,
+            children: _pages,
+          ),
+          /*Column(
           children: [
             //FavoriteSection(),
             Expanded(
@@ -417,148 +421,172 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),*/
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30.0),
-                topLeft: Radius.circular(30.0)),
-          ),
-          height: 100,
-          child: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.call,
-                    // color: Color.fromARGB(105, 77, 140, 176),
-                  ),
-                  label: "Call",
-                  backgroundColor: Color.fromARGB(10, 158, 158, 158),
-                ),
-                BottomNavigationBarItem(
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(30.0),
+                  topLeft: Radius.circular(30.0)),
+            ),
+            height: 100,
+            child: BottomNavigationBar(
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
                     icon: Icon(
-                      Icons.chat_bubble_outlined,
-                      //color: Color.fromARGB(105, 77, 140, 176),
+                      Icons.call,
+                      // color: Color.fromARGB(105, 77, 140, 176),
                     ),
-                    label: "Chats",
-                    backgroundColor: Color.fromARGB(10, 158, 158, 158)),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons
-                      .add_a_photo), // color: Color.fromARGB(105, 77, 140, 176)),
-                  label: "Stories",
-                  backgroundColor: Color.fromARGB(2, 158, 158, 158),
-                  //Color.fromARGB(105, 77, 140, 176),
-                ),
-              ],
-              type: BottomNavigationBarType.shifting,
-              currentIndex: _currentIndex,
-              selectedItemColor:
-                  Colors.white, //Color.fromARGB(105, 77, 140, 176),
-              iconSize: 28,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              elevation: 5),
-        ),
-        floatingActionButton: FloatingActionButton(
-          heroTag: 'Chats',
-          backgroundColor: _isDarkMode
-              ? Color.fromARGB(255, 77, 140, 176)
-              : Color.fromARGB(
-                  248, 107, 165, 212), //Color.fromARGB(105, 77, 140, 176),
-          onPressed: () {
-            showMenu(
-              color: _isDarkMode
-                  ? Colors.grey[800]
-                  : Color.fromARGB(255, 245, 245, 245),
-              context: context,
-              position: RelativeRect.fromLTRB(
-                  120.0, MediaQuery.of(context).size.height - 80.0, 80.0, 0.0),
-              items: [
-                PopupMenuItem(
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  AllUsersWidget(),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            var begin = 0.0;
-                            var end = 1.0;
-                            var curve = Curves.ease;
-                            var tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: curve));
-                            return ScaleTransition(
-                              scale: animation.drive(tween),
-                              child: child,
-                            );
-                          },
+                    label: "Call",
+                    backgroundColor: Color.fromARGB(10, 158, 158, 158),
+                  ),
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.chat_bubble_outlined,
+                        //color: Color.fromARGB(105, 77, 140, 176),
+                      ),
+                      label: "Chats",
+                      backgroundColor: Color.fromARGB(10, 158, 158, 158)),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons
+                        .add_a_photo), // color: Color.fromARGB(105, 77, 140, 176)),
+                    label: "Stories",
+                    backgroundColor: Color.fromARGB(2, 158, 158, 158),
+                    //Color.fromARGB(105, 77, 140, 176),
+                  ),
+                ],
+                type: BottomNavigationBarType.shifting,
+                currentIndex: _currentIndex,
+                selectedItemColor:
+                    Colors.white, //Color.fromARGB(105, 77, 140, 176),
+                iconSize: 24,
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                elevation: 1),
+          ),
+          floatingActionButton: _currentIndex == 1
+              ? FloatingActionButton(
+                  heroTag: 'Chats',
+                  backgroundColor: _isDarkMode
+                      ? Color.fromARGB(255, 77, 140, 176)
+                      : Color.fromARGB(248, 107, 165,
+                          212), //Color.fromARGB(105, 77, 140, 176),
+                  onPressed: () {
+                    showMenu(
+                      color: _isDarkMode
+                          ? Colors.grey[800]
+                          : Color.fromARGB(255, 245, 245, 245),
+                      context: context,
+                      position: RelativeRect.fromLTRB(120.0,
+                          MediaQuery.of(context).size.height - 80.0, 80.0, 0.0),
+                      items: [
+                        PopupMenuItem(
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      AllUsersWidget(),
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    var begin = 0.0;
+                                    var end = 1.0;
+                                    var curve = Curves.ease;
+                                    var tween = Tween(begin: begin, end: end)
+                                        .chain(CurveTween(curve: curve));
+                                    return ScaleTransition(
+                                      scale: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            leading: Icon(
+                              Icons.edit,
+                              color: _isDarkMode
+                                  ? Color.fromARGB(255, 245, 245, 245)
+                                  : Colors.grey[800],
+                            ),
+                            title: Text(
+                              'New discussion',
+                              style: TextStyle(
+                                color: _isDarkMode
+                                    ? Color.fromARGB(255, 245, 245, 245)
+                                    : Colors.grey[800],
+                              ),
+                            ),
+                          ),
                         ),
-                      );
-                    },
-                    leading: Icon(
-                      Icons.edit,
-                      color: _isDarkMode
-                          ? Color.fromARGB(255, 245, 245, 245)
-                          : Colors.grey[800],
-                    ),
-                    title: Text(
-                      'New discussion',
-                      style: TextStyle(
-                        color: _isDarkMode
-                            ? Color.fromARGB(255, 245, 245, 245)
-                            : Colors.grey[800],
-                      ),
-                    ),
-                  ),
-                ),
-                PopupMenuItem(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.key,
-                      color: _isDarkMode
-                          ? Color.fromARGB(255, 245, 245, 245)
-                          : Colors.grey[800],
-                    ),
-                    title: Text(
-                      'Archived',
-                      style: TextStyle(
-                        color: _isDarkMode
-                            ? Color.fromARGB(255, 245, 245, 245)
-                            : Colors.grey[800],
-                      ),
-                    ),
-                  ),
-                ),
-                PopupMenuItem(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.favorite,
-                      color: _isDarkMode
-                          ? Color.fromARGB(255, 245, 245, 245)
-                          : Colors.grey[800],
-                    ),
-                    title: Text(
-                      'Channels',
-                      style: TextStyle(
-                        color: _isDarkMode
-                            ? Color.fromARGB(255, 245, 245, 245)
-                            : Colors.grey[800],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-          child: Icon(Icons.add),
-        ),
-      ),
-    );
+                        PopupMenuItem(
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.key,
+                              color: _isDarkMode
+                                  ? Color.fromARGB(255, 245, 245, 245)
+                                  : Colors.grey[800],
+                            ),
+                            title: Text(
+                              'Archived',
+                              style: TextStyle(
+                                color: _isDarkMode
+                                    ? Color.fromARGB(255, 245, 245, 245)
+                                    : Colors.grey[800],
+                              ),
+                            ),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.favorite,
+                              color: _isDarkMode
+                                  ? Color.fromARGB(255, 245, 245, 245)
+                                  : Colors.grey[800],
+                            ),
+                            title: Text(
+                              'Channels',
+                              style: TextStyle(
+                                color: _isDarkMode
+                                    ? Color.fromARGB(255, 245, 245, 245)
+                                    : Colors.grey[800],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  child: Icon(Icons.add),
+                )
+              : _currentIndex == 2
+                  ? SpeedDialFabWidget(
+                      secondaryIconsList: [
+                        Icons.add_a_photo,
+                        Icons.photo,
+                        Icons.edit,
+                      ],
+                      secondaryIconsText: [
+                        "Camera",
+                        "Gallery",
+                        "Text",
+                      ],
+                      secondaryIconsOnPress: [
+                        ImageUtils.takePhoto,
+                        ImageUtils.getPhoto,
+                        () => {},
+                      ],
+                      secondaryBackgroundColor:
+                          Color.fromARGB(105, 77, 140, 176),
+                      secondaryForegroundColor: Colors.white,
+                      primaryBackgroundColor: Color.fromARGB(105, 77, 140, 176),
+                      primaryForegroundColor: Colors.white,
+                    )
+                  : null,
+        ));
   }
 
   @override
