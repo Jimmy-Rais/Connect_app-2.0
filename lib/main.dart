@@ -575,7 +575,14 @@ class _HomePageState extends State<HomePage> {
                         "Text",
                       ],
                       secondaryIconsOnPress: [
-                        ImageUtils.takePhoto,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImagePickerWidget1(),
+                            ),
+                          );
+                        },
                         ImageUtils.getPhoto,
                         () => {},
                       ],
