@@ -558,9 +558,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ],
-                    );
+                    ); 
                   },
-                  child: Icon(Icons.add),
+                  child: Icon(Icons.add), 
                 )
               : _currentIndex == 2
                   ? SpeedDialFabWidget(
@@ -571,7 +571,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                       secondaryIconsText: [
                         "Camera",
-                        "Gallery",
+                        "Gallery", 
                         "Text",
                       ],
                       secondaryIconsOnPress: [
@@ -595,6 +595,7 @@ class _HomePageState extends State<HomePage> {
                   : null,
         ));
   }
+  
 
   @override
   void initState2() {

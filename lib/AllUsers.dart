@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'chat.dart';
 
 class AllUsersWidget extends StatefulWidget {
   @override
@@ -40,11 +41,22 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
               final user = users.elementAt(index);
               final photoUrl = user.get('photo_url');
               final userName = user.get('user_name');
+
               return Container(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,
                 ),
                 child: ListTile(
+                  onTap: (() {
+                    String targetUserId = user.id;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            chatPage(targetUserId: targetUserId),
+                      ),
+                    );
+                  }),
                   leading: Container(
                     height: 60,
                     width: 60,
