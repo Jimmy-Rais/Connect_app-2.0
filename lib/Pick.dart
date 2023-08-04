@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 class ImageUtils {
   static Future<void> takePhoto() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       // Do something with the picked image file
@@ -12,7 +12,7 @@ class ImageUtils {
 
   static Future<void> getPhoto() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       // Do something with the picked image file

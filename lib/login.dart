@@ -225,27 +225,27 @@ class _loginState extends State<login> {
             child: Positioned(
                 right: 100,
                 top: 80,
-                child: DefaultTextStyle(
-                    style: const TextStyle(
-                      fontSize: 30.0,
-                      fontFamily: 'RobotoMono',
+                child: Row(
+                  children: [
+                    Text(
+                      "Made in",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                      ),
                     ),
-                    child: AnimatedTextKit(
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          'Connect with like-minded people,\nshare your thoughts and interests,\nand discover new ideas',
-                          textStyle: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          speed: const Duration(milliseconds: 50),
-                        ),
-                      ],
-                      onTap: () {
-                        print("Tap Event");
-                      },
-                    ))),
+                    /*Container(
+                      height: 12,
+                      width: 12,
+                      child: Flag.fromString(
+                        'CD',
+                        height: 200,
+                        width: 300,
+                        fit: BoxFit.fill,
+                      ),
+                    ),*/
+                  ],
+                )),
           ),
           /*  Text(
             "Welcome to connect",

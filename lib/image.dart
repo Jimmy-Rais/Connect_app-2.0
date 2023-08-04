@@ -53,7 +53,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -63,7 +63,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget1> {
   }
 
   Future takePhoto() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       if (pickedFile != null) {

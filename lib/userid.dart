@@ -25,7 +25,7 @@ class _useridState extends State<userid> {
 
   Future _getImageFromGallery() async {
     final pickedImage =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
         _image = File(pickedImage.path);

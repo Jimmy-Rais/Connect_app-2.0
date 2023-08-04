@@ -48,14 +48,14 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
                 ),
                 child: ListTile(
                   onTap: (() {
-                    String targetUserId = user.id;
+                    /* String targetUserId = user.id;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
                             chatPage(targetUserId: targetUserId),
                       ),
-                    );
+                    );*/
                   }),
                   leading: Container(
                     height: 60,

@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:Connect/chats.dart';
 import 'package:Connect/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -255,7 +254,7 @@ class _chattingSectionState extends State<chattingSection> {
                       title: Stack(children: <Widget>[
                     Container(
                         constraints: BoxConstraints(
-                            minWidth: 10,
+                            minWidth: 30,
                             maxWidth: double.infinity,
                             minHeight: 45,
                             maxHeight: double.infinity),

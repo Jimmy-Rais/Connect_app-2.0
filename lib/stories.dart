@@ -4,9 +4,9 @@ import 'package:Connect/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'image.dart';
 import 'image_picker.dart';
+import 'package:intl/intl.dart';
 
 final CollectionReference messagesCollection =
     FirebaseFirestore.instance.collection('Messages');
@@ -208,10 +208,11 @@ class Stories extends StatelessWidget {
                       final Map<String, dynamic> data =
                           document.data()! as Map<String, dynamic>;
                       final String photoUrl = data['photo_url'];
-
                       final Timestamp timestamp = data['date'];
+                      if (timestamp == null) {
+                        return Text('Date is null.');
+                      }
                       final String userId = data['userid'];
-
                       final DateTime date = timestamp.toDate();
                       final now = DateTime.now();
 
@@ -249,14 +250,14 @@ class Stories extends StatelessWidget {
                             }
                             return InkWell(
                               onTap: () => {
-                                Navigator.of(context).push(MaterialPageRoute(
+                                /*Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => StoryDetailsPage(
-                                        storySnapshot: document))),
+                                        storySnapshot: document))),*/
                               },
                               splashColor: Color.fromARGB(255, 99, 178, 223),
                               child: Container(
                                 padding: EdgeInsets.only(
-                                    left: 25, right: 10, top: 25),
+                                    left: 25, right: 6, top: 10),
                                 child: Row(
                                   children: [
                                     Container(
