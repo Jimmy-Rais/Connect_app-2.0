@@ -303,7 +303,7 @@ class _chattingSectionState extends State<chattingSection> {
                       fit: BoxFit.none, // BoxFit.scaleDown,
                       child: Text(
                         message['message'],
-                        style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white),
                       )),*/
                         //subtitle: Text(message['body']),
                         ),

@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                 title: AnimatedTextKit(
                   animatedTexts: [
                     ScaleAnimatedText('Connect',
-                        textStyle: TextStyle(
+                        textStyle: TextStyle......(
                           fontFamily: 'Canterbury',
                         )),
                     ScaleAnimatedText('Connect'),

@@ -7,6 +7,7 @@ import 'main.dart';
 import 'Page.dart';
 import 'login.dart';
 import 'signup.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -113,9 +114,13 @@ class _signinState extends State<signin> {
                   controller: emailController,
                   decoration: InputDecoration(
                     hintText: 'Email or phone number',
+                    hintStyle: GoogleFonts.acme(
+                      color: Colors.grey,
+                      fontSize: 15,
+                    ),
                     border: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 1),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 202, 22, 22), width: 3),
                         borderRadius: BorderRadius.circular(18)),
                   ),
                 ),
@@ -145,6 +150,10 @@ class _signinState extends State<signin> {
                   controller: passwordController,
                   decoration: InputDecoration(
                     hintText: 'Password',
+                    hintStyle: GoogleFonts.acme(
+                      color: Colors.grey,
+                      fontSize: 15,
+                    ),
                     border: OutlineInputBorder(
                         borderSide:
                             const BorderSide(color: Colors.black, width: 0.0),
@@ -166,24 +175,32 @@ class _signinState extends State<signin> {
                 ),
               ),
             ),*/
-            SizedBox(height: 30),
-            AnimatedOpacity(
-              opacity: _opacity,
-              duration: Duration(milliseconds: 1500),
-              curve: Curves.easeIn,
-              child: TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
-                  },
-                  child: Text(
-                    "Forgot password?",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 35, 152, 194),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  )),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                SizedBox(
+                  width: 190,
+                ),
+                AnimatedOpacity(
+                  opacity: _opacity,
+                  duration: Duration(milliseconds: 1500),
+                  curve: Curves.easeIn,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+                      },
+                      child: Text(
+                        "Forgot password?",
+                        style: GoogleFonts.acme(
+                          color: Color.fromARGB(255, 35, 152, 194),
+                          fontSize: 15,
+                        ),
+                      )),
+                ),
+              ],
             ),
             /*TextButton(
                 onPressed: () {
@@ -198,14 +215,14 @@ class _signinState extends State<signin> {
                     fontSize: 25,
                   ),
                 )),*/
-            SizedBox(height: 60),
+            SizedBox(height: 30),
             AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 2000),
               curve: Curves.easeIn,
               child: Container(
-                  width: 120,
-                  height: 70,
+                  width: 280,
+                  height: 50,
                   child: ElevatedButton(
                       onPressed: SignIn,
                       style: ElevatedButton.styleFrom(
@@ -216,9 +233,33 @@ class _signinState extends State<signin> {
                       ),
                       child: Text(
                         'Log in',
-                        style: TextStyle(
+                        style: GoogleFonts.acme(
                           color: Colors.white,
-                          fontSize: 25,
+                          fontSize: 18,
+                          // fontWeight: FontWeight.bold,
+                        ),
+                      ))),
+            ),
+            AnimatedOpacity(
+              opacity: _opacity,
+              duration: Duration(milliseconds: 2000),
+              curve: Curves.easeIn,
+              child: Container(
+                  width: 280,
+                  height: 50,
+                  child: ElevatedButton(
+                      onPressed: SignIn,
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromARGB(229, 230, 235, 238),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18), // <-- Radius
+                        ),
+                      ),
+                      child: Text(
+                        'Login  with  Google',
+                        style: GoogleFonts.acme(
+                          color: Colors.grey,
+                          fontSize: 15,
                           // fontWeight: FontWeight.bold,
                         ),
                       ))),
@@ -242,21 +283,21 @@ class _signinState extends State<signin> {
                         // fontWeight: FontWeight.bold,
                       ),
                     ))),*/
-            SizedBox(height: 40),
+            SizedBox(height: 80),
             AnimatedOpacity(
                 opacity: _opacity,
                 duration: Duration(milliseconds: 2500),
                 curve: Curves.easeIn,
                 child: Row(
                   children: [
+                    SizedBox(width: 40),
                     Container(
                       padding: EdgeInsets.only(left: 75),
                       child: Text(
                         'New user?',
-                        style: TextStyle(
+                        style: GoogleFonts.acme(
                           color: Color.fromARGB(255, 73, 43, 7),
                           fontSize: 15,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -285,9 +326,8 @@ class _signinState extends State<signin> {
                         },
                         child: Text(
                           "Create an account",
-                          style: TextStyle(
+                          style: GoogleFonts.acme(
                             color: Color.fromARGB(255, 35, 152, 194),
-                            fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         )),

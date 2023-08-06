@@ -6,6 +6,8 @@ import 'signup.dart';
 import 'signin.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'motion.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flag/flag.dart';
 
 class login extends StatefulWidget {
   login({Key? key}) : super(key: key);
@@ -217,35 +219,33 @@ class _loginState extends State<login> {
               ),
             ),
           ),*/
-          SizedBox(height: 130),
-          AnimatedOpacity(
-            opacity: _opacity,
-            duration: Duration(milliseconds: 3500),
-            curve: Curves.easeIn,
-            child: Positioned(
-                right: 100,
-                top: 80,
-                child: Row(
-                  children: [
-                    Text(
-                      "Made in",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                      ),
-                    ),
-                    /*Container(
-                      height: 12,
-                      width: 12,
-                      child: Flag.fromString(
-                        'CD',
-                        height: 200,
-                        width: 300,
-                        fit: BoxFit.fill,
-                      ),
-                    ),*/
-                  ],
-                )),
+          SizedBox(height: 182),
+          Row(
+            children: [
+              SizedBox(
+                width: 135,
+              ),
+              Text(
+                "Made  in  DR CONGO",
+                style: GoogleFonts.acme(
+                  color: Colors.grey,
+                  fontSize: 12,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                height: 15,
+                width: 15,
+                child: Flag.fromString(
+                  'CD',
+                  height: 200,
+                  width: 300,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ],
           ),
           /*  Text(
             "Welcome to connect",

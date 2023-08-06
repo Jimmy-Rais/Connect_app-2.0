@@ -15,6 +15,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'image_picker.dart';
 import 'image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class signup extends StatefulWidget {
   const signup({Key? key}) : super(key: key);
@@ -64,10 +66,9 @@ class _signupState extends State<signup> {
             Container(
                 child: Text(
               "Create account",
-              style: TextStyle(
+              style: GoogleFonts.acme(
                 color: Color.fromARGB(255, 73, 43, 7),
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
+                fontSize: 30,
               ),
             )),
 
@@ -80,7 +81,7 @@ class _signupState extends State<signup> {
                 fontWeight: FontWeight.bold,
               ),
             )),*/
-            SizedBox(height: 45),
+            SizedBox(height: 55),
             AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 500),
@@ -92,6 +93,10 @@ class _signupState extends State<signup> {
                   controller: emailController,
                   decoration: InputDecoration(
                     hintText: 'Email',
+                    hintStyle: GoogleFonts.acme(
+                      color: Colors.grey,
+                      fontSize: 15,
+                    ),
                     prefixIcon: Icon(Icons.mail),
                     border: OutlineInputBorder(
                         borderSide:
@@ -129,6 +134,10 @@ class _signupState extends State<signup> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.password_outlined),
                     hintText: 'Password',
+                    hintStyle: GoogleFonts.acme(
+                      color: Colors.grey,
+                      fontSize: 15,
+                    ),
                     border: OutlineInputBorder(
                         borderSide:
                             const BorderSide(color: Colors.black, width: 0.0),
@@ -152,15 +161,15 @@ class _signupState extends State<signup> {
                 ),
               ),
             ),*/
-            SizedBox(height: 90),
+            SizedBox(height: 55),
             AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 1500),
               curve: Curves.easeIn,
               child: Container(
                   child: Container(
-                      height: 70,
-                      width: 120,
+                      height: 50,
+                      width: 280,
                       child: ElevatedButton(
                           onPressed: SignUp,
                           style: ElevatedButton.styleFrom(
@@ -172,11 +181,61 @@ class _signupState extends State<signup> {
                           ),
                           child: Text(
                             'Sign up',
-                            style: TextStyle(
+                            style: GoogleFonts.acme(
                               color: Colors.white,
-                              fontSize: 25,
+                              fontSize: 18,
                             ),
                           )))),
+            ),
+            SizedBox(height: 10),
+            AnimatedOpacity(
+              opacity: _opacity,
+              duration: Duration(milliseconds: 2000),
+              curve: Curves.easeIn,
+              child: Container(
+                  width: 280,
+                  height: 50,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromARGB(229, 230, 235, 238),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18), // <-- Radius
+                        ),
+                      ),
+                      child: Text(
+                        'Sign up  with  Google',
+                        style: GoogleFonts.acme(
+                          color: Colors.grey,
+                          fontSize: 15,
+                          // fontWeight: FontWeight.bold,
+                        ),
+                      ))),
+            ),
+            SizedBox(height: 20),
+            AnimatedTextKit(
+              animatedTexts: [
+                TypewriterAnimatedText(
+                  'By signing up,you agree to our Terms of Use and\nPrivacy Policy.',
+                  textStyle: GoogleFonts.aladin(
+                    fontSize: 14,
+                    color: Colors.grey,
+                    //fontStyle: FontStyle.italic,
+                  ),
+                  speed: const Duration(milliseconds: 70),
+                ),
+              ],
+              onTap: () {
+                print("Tap Event");
+              },
+              /* Container(
+                child: Text(
+              'By signing up,you agree to our Terms of Use and\nPrivacy Policy.',
+              style: GoogleFonts.aladin(
+                // fontStyle: FontStyle.italic,
+                color: Colors.grey,
+                fontSize: 14,
+              ),*/
             ),
             /* Container(
                 child: Container(
@@ -198,7 +257,7 @@ class _signupState extends State<signup> {
                             fontSize: 25,
                           ),
                         )))),*/
-            SizedBox(height: 50),
+            SizedBox(height: 80),
             AnimatedOpacity(
                 opacity: _opacity,
                 duration: Duration(milliseconds: 2000),
@@ -206,15 +265,15 @@ class _signupState extends State<signup> {
                 child: Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 66),
+                      padding: EdgeInsets.only(left: 90),
                       child: Text(
                         'Already have an account?',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 73, 43, 7),
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold
-                            // fontWeight: FontWeight.bold,
-                            ),
+                        style: GoogleFonts.acme(
+                          color: Colors.grey,
+                          fontSize: 15,
+
+                          // fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     TextButton(
@@ -242,9 +301,8 @@ class _signupState extends State<signup> {
                         },
                         child: Text(
                           "Sign in",
-                          style: TextStyle(
+                          style: GoogleFonts.acme(
                             color: Color.fromARGB(255, 35, 152, 194),
-                            fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         )),
