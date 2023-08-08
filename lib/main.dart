@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'AllUsers.dart';
 import 'Pick.dart';
+import 'package:google_fonts/google_fonts.dart';
 /*Future<void> getUserData() async {
   final userId = FirebaseAuth.instance.currentUser?.uid;
   final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
@@ -134,8 +135,8 @@ class _HomePageState extends State<HomePage> {
                 title: AnimatedTextKit(
                   animatedTexts: [
                     ScaleAnimatedText('Connect',
-                        textStyle: TextStyle......(
-                          fontFamily: 'Canterbury',
+                        textStyle: GoogleFonts.acme(
+                          fontSize: 15,
                         )),
                     ScaleAnimatedText('Connect'),
                     ScaleAnimatedText('Connect'),
@@ -558,9 +559,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ],
-                    ); 
+                    );
                   },
-                  child: Icon(Icons.add), 
+                  child: Icon(Icons.add),
                 )
               : _currentIndex == 2
                   ? SpeedDialFabWidget(
@@ -571,7 +572,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                       secondaryIconsText: [
                         "Camera",
-                        "Gallery", 
+                        "Gallery",
                         "Text",
                       ],
                       secondaryIconsOnPress: [
@@ -595,7 +596,6 @@ class _HomePageState extends State<HomePage> {
                   : null,
         ));
   }
-  
 
   @override
   void initState2() {

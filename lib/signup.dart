@@ -376,7 +376,7 @@ class _signupState extends State<signup> {
         password: passwordController.text.trim(),
       );
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => userid()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => userid1()));
     } on FirebaseAuthException catch (e) {
       print(e);
     }

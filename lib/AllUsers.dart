@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'chat.dart';
+import 'mychat.dart';
 
 class AllUsersWidget extends StatefulWidget {
   @override
@@ -41,38 +41,40 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
               final user = users.elementAt(index);
               final photoUrl = user.get('photo_url');
               final userName = user.get('user_name');
+              final userid = user.id;
 
-              return Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 10.0,
-                ),
-                child: ListTile(
-                  onTap: (() {
-                    /* String targetUserId = user.id;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            chatPage(targetUserId: targetUserId),
+              return InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 10.0,
+                    ),
+                    child: ListTile(
+                      onTap: () {
+                        // Navigate to user detail page and pass userId
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => chatPage5(userid: user.id),
+                          ),
+                        );
+                      },
+                      leading: Container(
+                        height: 60,
+                        width: 60,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(photoUrl),
+                        ),
                       ),
-                    );*/
-                  }),
-                  leading: Container(
-                    height: 60,
-                    width: 60,
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(photoUrl),
+                      title: Text(
+                        userName,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
-                  ),
-                  title: Text(
-                    userName,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              );
+                  ));
             },
           );
         },

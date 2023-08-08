@@ -11,14 +11,14 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class userid extends StatefulWidget {
-  const userid({super.key});
+class userid1 extends StatefulWidget {
+  const userid1({super.key});
 
   @override
-  State<userid> createState() => _useridState();
+  State<userid1> createState() => _userid1State();
 }
 
-class _useridState extends State<userid> {
+class _userid1State extends State<userid1> {
   String user_name = "";
   String birth_date = "";
   File? _image;
