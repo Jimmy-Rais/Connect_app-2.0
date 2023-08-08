@@ -8,6 +8,7 @@ import 'Page.dart';
 import 'login.dart';
 import 'signup.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -82,28 +83,62 @@ class _signinState extends State<signin> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              height: 80,
+            ),
+            DefaultTextStyle(
+              style: GoogleFonts.sacramento(
+                color: const Color.fromARGB(82, 0, 0, 0),
+                fontWeight: FontWeight.w700,
+                fontSize: 35,
+                shadows: [
+                  Shadow(
+                    blurRadius: 5.0,
+                    color: Colors.white,
+                    offset: Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: AnimatedTextKit(
+                repeatForever: false,
+                animatedTexts: [
+                  TyperAnimatedText(
+                    'Welcome to connect...',
+                    speed: const Duration(milliseconds: 100),
+                  ),
+                ],
+                onTap: () {
+                  print("Tap Event");
+                },
+              ),
+            ),
+
+            /*  Container(
+                padding: EdgeInsets.only(
+                  right: 100,
+                ),
+                child: Text("Welcome to connect...",
+                    style: GoogleFonts.sacramento(
+                      color: const Color.fromARGB(82, 0, 0, 0),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 35,
+                    ))),*/
+            SizedBox(
+              height: 15,
+            ),
             /* AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 20),
               curve: Curves.easeIn,*/
+
             Container(
-              child: Image(image: AssetImage('images/avatar/connect2.jpg')),
+              child: Image(image: AssetImage('images/avatar/connect4.png')),
             ),
 
             /*Container(
                 child: Image(image: AssetImage('images/avatar/connect2.jpg'))),*/
-            SizedBox(height: 35),
-            Container(
-                padding: EdgeInsets.only(right: 200),
-                child: Text(
-                  "",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 73, 43, 7),
-                    fontSize: 25,
-                    decoration: TextDecoration.none,
-                  ),
-                )),
-            SizedBox(height: 25),
+
+            SizedBox(height: 2),
             AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 500),
@@ -175,7 +210,7 @@ class _signinState extends State<signin> {
                 ),
               ),
             ),*/
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Row(
               children: [
                 SizedBox(
@@ -215,7 +250,7 @@ class _signinState extends State<signin> {
                     fontSize: 25,
                   ),
                 )),*/
-            SizedBox(height: 30),
+            SizedBox(height: 10),
             AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 2000),
@@ -283,7 +318,7 @@ class _signinState extends State<signin> {
                         // fontWeight: FontWeight.bold,
                       ),
                     ))),*/
-            SizedBox(height: 80),
+            SizedBox(height: 15),
             AnimatedOpacity(
                 opacity: _opacity,
                 duration: Duration(milliseconds: 2500),

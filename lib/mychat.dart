@@ -268,7 +268,7 @@ class chattingSection extends StatefulWidget {
 }
 
 class _chattingSectionState extends State<chattingSection> {
-  final List Messages = [];
+  final List messages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -332,7 +332,7 @@ class _chattingSectionState extends State<chattingSection> {
                       title: Stack(children: <Widget>[
                     Container(
                         constraints: BoxConstraints(
-                            minWidth: 30,
+                            minWidth: 50,
                             maxWidth: double.infinity,
                             minHeight: 45,
                             maxHeight: double.infinity),
@@ -357,7 +357,7 @@ class _chattingSectionState extends State<chattingSection> {
                                 Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 140),
+                                      padding: const EdgeInsets.only(left: 130),
                                       child: Text(
                                         formattedDateTime,
                                         style: TextStyle(
@@ -419,6 +419,7 @@ Future sendMsg(
     'timestamp': FieldValue.serverTimestamp(),
     'sender_id': userId,
     'receiver_id': userid,
+    //'userid': userid,
   };
   await docUser.set(json);
 }
