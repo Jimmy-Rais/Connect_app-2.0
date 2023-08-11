@@ -290,13 +290,17 @@ class _signinState extends State<signin> {
                           borderRadius: BorderRadius.circular(18), // <-- Radius
                         ),
                       ),
-                      child: Text(
-                        'Login  with  Google',
-                        style: GoogleFonts.acme(
-                          color: Colors.grey,
-                          fontSize: 15,
-                          // fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Login  with  Google',
+                            style: GoogleFonts.acme(
+                              color: Colors.grey,
+                              fontSize: 15,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ))),
             ),
             /*  Container(
