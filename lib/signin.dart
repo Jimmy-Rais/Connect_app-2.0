@@ -84,32 +84,35 @@ class _signinState extends State<signin> {
         child: Column(
           children: [
             SizedBox(
-              height: 80,
+              height: 60,
             ),
-            DefaultTextStyle(
-              style: GoogleFonts.sacramento(
-                color: const Color.fromARGB(82, 0, 0, 0),
-                fontWeight: FontWeight.w700,
-                fontSize: 35,
-                shadows: [
-                  Shadow(
-                    blurRadius: 5.0,
-                    color: Colors.white,
-                    offset: Offset(0, 0),
-                  ),
-                ],
-              ),
-              child: AnimatedTextKit(
-                repeatForever: false,
-                animatedTexts: [
-                  TyperAnimatedText(
-                    'Welcome to connect...',
-                    speed: const Duration(milliseconds: 100),
-                  ),
-                ],
-                onTap: () {
-                  print("Tap Event");
-                },
+            Padding(
+              padding: const EdgeInsets.only(right: 260),
+              child: DefaultTextStyle(
+                style: GoogleFonts.acme(
+                  color: Color.fromARGB(255, 73, 43, 7),
+                  fontSize: 20,
+                ),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Sign in',
+                      speed: const Duration(milliseconds: 150),
+                    ),
+
+                    //FadeAnimatedText('do it RIGHT NOW!!!'),
+                  ],
+                  repeatForever: true,
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                ),
+                /*  Text(
+                "Sign in",
+                style: GoogleFonts.acme(
+                  color: Color.fromARGB(255, 73, 43, 7),
+                  fontSize: 23,
+                ),*/
               ),
             ),
 
@@ -132,6 +135,8 @@ class _signinState extends State<signin> {
               curve: Curves.easeIn,*/
 
             Container(
+              height: 250,
+              width: 250,
               child: Image(image: AssetImage('images/avatar/connect4.png')),
             ),
 
@@ -144,7 +149,7 @@ class _signinState extends State<signin> {
               duration: Duration(milliseconds: 500),
               curve: Curves.easeIn,
               child: Container(
-                width: 380,
+                width: 320,
                 child: TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -180,7 +185,7 @@ class _signinState extends State<signin> {
               duration: Duration(milliseconds: 1000),
               curve: Curves.easeIn,
               child: Container(
-                width: 380,
+                width: 320,
                 child: TextField(
                   controller: passwordController,
                   decoration: InputDecoration(
@@ -191,7 +196,7 @@ class _signinState extends State<signin> {
                     ),
                     border: OutlineInputBorder(
                         borderSide:
-                            const BorderSide(color: Colors.black, width: 0.0),
+                            const BorderSide(color: Colors.black, width: 3.0),
                         borderRadius: BorderRadius.circular(18)),
                   ),
                 ),
@@ -250,7 +255,7 @@ class _signinState extends State<signin> {
                     fontSize: 25,
                   ),
                 )),*/
-            SizedBox(height: 10),
+            SizedBox(height: 18),
             AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 2000),
@@ -285,17 +290,25 @@ class _signinState extends State<signin> {
                   child: ElevatedButton(
                       onPressed: SignIn,
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromARGB(229, 230, 235, 238),
+                        primary: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18), // <-- Radius
                         ),
                       ),
                       child: Row(
                         children: [
+                          Container(
+                            height: 35,
+                            width: 35,
+                            child: Image(
+                                image:
+                                    AssetImage('images/avatar/googleIc.webp')),
+                          ),
+                          SizedBox(width: 24),
                           Text(
                             'Login  with  Google',
                             style: GoogleFonts.acme(
-                              color: Colors.grey,
+                              color: Color.fromARGB(169, 0, 0, 0),
                               fontSize: 15,
                               // fontWeight: FontWeight.bold,
                             ),
@@ -322,7 +335,7 @@ class _signinState extends State<signin> {
                         // fontWeight: FontWeight.bold,
                       ),
                     ))),*/
-            SizedBox(height: 15),
+            SizedBox(height: 25),
             AnimatedOpacity(
                 opacity: _opacity,
                 duration: Duration(milliseconds: 2500),
@@ -331,7 +344,7 @@ class _signinState extends State<signin> {
                   children: [
                     SizedBox(width: 40),
                     Container(
-                      padding: EdgeInsets.only(left: 75),
+                      padding: EdgeInsets.only(left: 60),
                       child: Text(
                         'New user?',
                         style: GoogleFonts.acme(

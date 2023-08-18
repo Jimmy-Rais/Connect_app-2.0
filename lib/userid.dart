@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class userid1 extends StatefulWidget {
   const userid1({super.key});
@@ -50,10 +51,9 @@ class _userid1State extends State<userid1> {
         Container(
             child: Text(
           "Personal informations",
-          style: TextStyle(
+          style: GoogleFonts.acme(
             color: Color.fromARGB(255, 73, 43, 7),
             fontSize: 25,
-            fontWeight: FontWeight.bold,
           ),
         )),
         SizedBox(height: 45),
@@ -103,10 +103,14 @@ class _userid1State extends State<userid1> {
         SizedBox(height: 45),
         Container(
           //padding: EdgeInsets.only(left: 25),
-          width: 380,
+          width: 320,
           child: TextField(
             decoration: InputDecoration(
               hintText: 'User name',
+              hintStyle: GoogleFonts.acme(
+                color: Colors.grey,
+                fontSize: 15,
+              ),
               prefixIcon: Icon(Icons.mail),
               border: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 1),
@@ -117,10 +121,11 @@ class _userid1State extends State<userid1> {
         ),
         SizedBox(height: 35),
         Container(
-          width: 380,
+          width: 320,
           child: TextField(
             decoration: InputDecoration(
               hintText: 'Birth date (17/12/2000)',
+              hintStyle: GoogleFonts.acme(color: Colors.grey, fontSize: 15),
               prefixIcon: Icon(Icons.calendar_today_outlined),
               border: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.black, width: 1),
@@ -184,7 +189,7 @@ class _userid1State extends State<userid1> {
                 ),
                 child: Text(
                   'Continue',
-                  style: TextStyle(
+                  style: GoogleFonts.acme(
                     color: Colors.white,
                     fontSize: 15,
                   ),

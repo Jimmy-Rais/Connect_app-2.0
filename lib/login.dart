@@ -87,7 +87,7 @@ class _loginState extends State<login> {
                   ),
                   child: Text(
                     "SIGN IN",
-                    style: TextStyle(
+                    style: GoogleFonts.acme(
                       color: Colors.white,
                       fontSize: 30,
                     ),
@@ -171,7 +171,7 @@ class _loginState extends State<login> {
                   ),
                   child: Text(
                     "SIGN UP",
-                    style: TextStyle(
+                    style: GoogleFonts.acme(
                       color: Colors.white,
                       fontSize: 30,
                     ),
@@ -219,7 +219,7 @@ class _loginState extends State<login> {
               ),
             ),
           ),*/
-          SizedBox(height: 190),
+          SizedBox(height: 160),
           Row(
             children: [
               SizedBox(

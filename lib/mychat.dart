@@ -413,7 +413,7 @@ Future sendMsg(
     {required String msg,
     required String userId,
     required String userid}) async {
-  final docUser = FirebaseFirestore.instance.collection('messages').doc();
+  final docUser = FirebaseFirestore.instance.collection('messages').doc(userid);
   final json = {
     'message': msg,
     'timestamp': FieldValue.serverTimestamp(),

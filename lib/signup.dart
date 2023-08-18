@@ -88,7 +88,7 @@ class _signupState extends State<signup> {
               curve: Curves.easeIn,
               child: Container(
                 //padding: EdgeInsets.only(left: 25),
-                width: 380,
+                width: 320,
                 child: TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -127,7 +127,7 @@ class _signupState extends State<signup> {
               duration: Duration(milliseconds: 1000),
               curve: Curves.easeIn,
               child: Container(
-                width: 500,
+                width: 320,
                 //padding: EdgeInsets.only(left: 25),
                 child: TextField(
                   controller: passwordController,
@@ -161,7 +161,7 @@ class _signupState extends State<signup> {
                 ),
               ),
             ),*/
-            SizedBox(height: 55),
+            SizedBox(height: 65),
             AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 1500),
@@ -187,8 +187,43 @@ class _signupState extends State<signup> {
                             ),
                           )))),
             ),
-            SizedBox(height: 10),
             AnimatedOpacity(
+              opacity: _opacity,
+              duration: Duration(milliseconds: 2000),
+              curve: Curves.easeIn,
+              child: Container(
+                  width: 280,
+                  height: 50,
+                  child: ElevatedButton(
+                      onPressed: SignUp,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18), // <-- Radius
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 35,
+                            width: 35,
+                            child: Image(
+                                image:
+                                    AssetImage('images/avatar/googleIc.webp')),
+                          ),
+                          SizedBox(width: 24),
+                          Text(
+                            'Sign up  with  Google',
+                            style: GoogleFonts.acme(
+                              color: Color.fromARGB(169, 0, 0, 0),
+                              fontSize: 15,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ))),
+            ),
+            /*AnimatedOpacity(
               opacity: _opacity,
               duration: Duration(milliseconds: 2000),
               curve: Curves.easeIn,
@@ -211,7 +246,7 @@ class _signupState extends State<signup> {
                           // fontWeight: FontWeight.bold,
                         ),
                       ))),
-            ),
+            ),*/
             SizedBox(height: 20),
             AnimatedTextKit(
               animatedTexts: [

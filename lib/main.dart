@@ -396,6 +396,32 @@ class _HomePageState extends State<HomePage> {
                   title: const Text('Log out',
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
                 ),
+                SizedBox(height: 50),
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(right: 150),
+                      child: Text(
+                        "Connect v11.31.0.51",
+                        style: GoogleFonts.acme(
+                          fontSize: 13,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 150),
+                      child: Text(
+                        "Made in DR Congo",
+                        style: GoogleFonts.acme(
+                          fontSize: 13,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
                 /*ListTile(
                 leading: IconButton(
                   onPressed: () {
