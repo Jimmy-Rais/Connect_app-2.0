@@ -24,11 +24,19 @@ import 'package:provider/provider.dart';
 import 'AllUsers.dart';
 import 'Pick.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'esp.dart';
+import 'mychats2.dart';
+
 /*Future<void> getUserData() async {
   final userId = FirebaseAuth.instance.currentUser?.uid;
   final userDoc = await FirebaseFirestore.instance.collection('Users').doc(userId).get();
   final userName = userDoc.data()?['user_name'];
 }*/
+DatabaseReference ref = FirebaseDatabase.instance.ref();
+
+// Access a child of the current reference
+DatabaseReference child = ref.child("");
 
 class MyState extends ChangeNotifier {
   bool isDarkMode = false;
@@ -123,6 +131,30 @@ class _HomePageState extends State<HomePage> {
     _getUserData();
   }
 */
+  final DatabaseReference _database = FirebaseDatabase.instance.reference();
+  /*@override
+  void initState() {
+    super.initState();
+    _database.child('ep32_device').once().then(
+      (DataSnapshot snapshot){
+        string ledstate=snapshot.value['ledstate']['Data']
+      }
+    )
+  }*/
+  /* @override
+void initState() {
+  super.initState();
+  _database.child('ep32_device').once().then(event)
+     final dataSnapshot = event.snapshot
+    (DataSnapshot snapshot) {
+      String ledstate = snapshot.value['ledstate']['Data'];
+      // Do something with the 'ledstate' value
+    }
+  ).catchError((error) {
+    // Handle any errors that occurred during the database operation
+    print("Error: $error");
+  });
+}*/
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -396,9 +428,21 @@ class _HomePageState extends State<HomePage> {
                   title: const Text('Log out',
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
                 ),
-                SizedBox(height: 50),
+                //SizedBox(height: 50),
                 Column(
                   children: [
+                    /*       ElevatedButton(
+                      onPressed: () {
+                        _changeLedStatus(true); // Turn LED ON
+                      },
+                      child: Text('Turn ON'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _changeLedStatus(false); // Turn LED OFF
+                      },
+                      child: Text('Turn OFF'),
+                    ),
                     Container(
                       padding: EdgeInsets.only(right: 150),
                       child: Text(
@@ -409,6 +453,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
+                    Text(
+                      'LED Status: $ledStatus',
+                      style: TextStyle(fontSize: 18),
+                    ),*/
                     Container(
                       padding: EdgeInsets.only(right: 150),
                       child: Text(
@@ -568,6 +616,28 @@ class _HomePageState extends State<HomePage> {
                         ),
                         PopupMenuItem(
                           child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      ChatListScreen(),
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    var begin = 0.0;
+                                    var end = 1.0;
+                                    var curve = Curves.ease;
+                                    var tween = Tween(begin: begin, end: end)
+                                        .chain(CurveTween(curve: curve));
+                                    return ScaleTransition(
+                                      scale: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                             leading: Icon(
                               Icons.favorite,
                               color: _isDarkMode

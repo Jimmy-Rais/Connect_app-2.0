@@ -219,8 +219,39 @@ class _loginState extends State<login> {
               ),
             ),
           ),*/
-          SizedBox(height: 160),
-          Row(
+          SizedBox(height: 190),
+          AnimatedOpacity(
+            opacity: _opacity,
+            duration: Duration(milliseconds: 3000),
+            curve: Curves.easeIn,
+            child: Row(
+              children: [
+                SizedBox(width: 140),
+                Text(
+                  "Made  in  DR CONGO",
+                  style: GoogleFonts.acme(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  height: 15,
+                  width: 15,
+                  child: Flag.fromString(
+                    'CD',
+                    height: 200,
+                    width: 300,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          /* Row(
             children: [
               SizedBox(
                 width: 135,
@@ -246,7 +277,7 @@ class _loginState extends State<login> {
                 ),
               ),
             ],
-          ),
+          ),*/
           /*  Text(
             "Welcome to connect",
             style: TextStyle(

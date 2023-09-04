@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 final currentUser = FirebaseAuth.instance.currentUser;
 final userId = currentUser?.uid ?? '';
 final CollectionReference messagesCollection =
-    FirebaseFirestore.instance.collection('messages');
+    FirebaseFirestore.instance.collection('messages').doc().collection('chats');
 
 class chatPage5 extends StatelessWidget {
   //const chatPage({Key? key}) : super(key: key);
@@ -218,7 +218,9 @@ class _BottomsectionState extends State<Bottomsection> {
                       suffixIcon: IconButton(
                         onPressed: () {
                           sendMsg(
-                              msg: msg, userId: userId, userid: widget.userid);
+                              msg: msg,
+                              userId: userId,
+                              receiverId: widget.userid);
                           print(msg);
                         },
                         icon: Icon(
@@ -409,7 +411,7 @@ class _chattingSectionState extends State<chattingSection> {
 }
 
 //Write data on cloud Firestore
-Future sendMsg(
+/*Future sendMsg(
     {required String msg,
     required String userId,
     required String userid}) async {
@@ -421,6 +423,57 @@ Future sendMsg(
     'receiver_id': userid,
     //'userid': userid,
   };
+  await docUser.set(json);
+}*/
+/*Future<void> sendMsg({
+  required String msg,
+  required String userId,
+  required String receiverId,
+}) async {
+  final chatDocumentId = '$userId' + '_' + '$receiverId';
+  final docUser = FirebaseFirestore.instance
+      .collection('messages')
+      .doc(chatDocumentId)
+      .collection('chats')
+      .doc(); // Use auto-generated ID for messages
+  final json = {
+    'messagetxt': msg,
+    'readstatus': false,
+    'senderid': userId,
+    'receiverid': receiverId,
+    'timestamp': FieldValue.serverTimestamp(),
+  };
+  await docUser.set(json);
+}*/
+Future<void> sendMsg({
+  required String msg,
+  required String userId,
+  required String receiverId,
+}) async {
+  final chatDocumentId = '$userId' + '_' + '$receiverId';
+  final docUser = FirebaseFirestore.instance
+      .collection('messages')
+      .doc(chatDocumentId)
+      .collection('chats')
+      .doc(); // Use auto-generated ID for messages
+  final json = {
+    'messagetxt': msg,
+    'readstatus': false,
+    'senderid': userId,
+    'receiverid': receiverId,
+    'timestamp': FieldValue.serverTimestamp(),
+  };
+
+  // Update participants field of the message document
+  final participantArray = [userId, receiverId];
+  await FirebaseFirestore.instance
+      .collection('messages')
+      .doc(chatDocumentId)
+      .set({
+    'Participants': participantArray,
+  }, SetOptions(merge: true)); // Merge the new data with existing document
+
+  // Add the new message to the chats subcollection
   await docUser.set(json);
 }
 

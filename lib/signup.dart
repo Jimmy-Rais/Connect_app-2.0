@@ -98,7 +98,7 @@ class _signupState extends State<signup> {
                       fontSize: 15,
                     ),
                     prefixIcon: Icon(Icons.mail),
-                    border: OutlineInputBorder(
+                    border: UnderlineInputBorder(
                         borderSide:
                             const BorderSide(color: Colors.black, width: 1),
                         borderRadius: BorderRadius.circular(18)),
@@ -130,6 +130,7 @@ class _signupState extends State<signup> {
                 width: 320,
                 //padding: EdgeInsets.only(left: 25),
                 child: TextField(
+                  obscureText: true,
                   controller: passwordController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.password_outlined),
@@ -138,7 +139,7 @@ class _signupState extends State<signup> {
                       color: Colors.grey,
                       fontSize: 15,
                     ),
-                    border: OutlineInputBorder(
+                    border: UnderlineInputBorder(
                         borderSide:
                             const BorderSide(color: Colors.black, width: 0.0),
                         borderRadius: BorderRadius.circular(18)),

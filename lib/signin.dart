@@ -102,7 +102,7 @@ class _signinState extends State<signin> {
 
                     //FadeAnimatedText('do it RIGHT NOW!!!'),
                   ],
-                  repeatForever: true,
+                  repeatForever: false,
                   onTap: () {
                     print("Tap Event");
                   },
@@ -153,12 +153,13 @@ class _signinState extends State<signin> {
                 child: TextField(
                   controller: emailController,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.mail),
                     hintText: 'Email or phone number',
                     hintStyle: GoogleFonts.acme(
                       color: Colors.grey,
                       fontSize: 15,
                     ),
-                    border: OutlineInputBorder(
+                    border: UnderlineInputBorder(
                         borderSide: const BorderSide(
                             color: Color.fromARGB(255, 202, 22, 22), width: 3),
                         borderRadius: BorderRadius.circular(18)),
@@ -187,14 +188,16 @@ class _signinState extends State<signin> {
               child: Container(
                 width: 320,
                 child: TextField(
+                  obscureText: true,
                   controller: passwordController,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.password_outlined),
                     hintText: 'Password',
                     hintStyle: GoogleFonts.acme(
                       color: Colors.grey,
                       fontSize: 15,
                     ),
-                    border: OutlineInputBorder(
+                    border: UnderlineInputBorder(
                         borderSide:
                             const BorderSide(color: Colors.black, width: 3.0),
                         borderRadius: BorderRadius.circular(18)),
