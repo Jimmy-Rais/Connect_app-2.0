@@ -9,8 +9,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-final currentUser = FirebaseAuth.instance.currentUser;
-final currentuserid = currentUser?.uid ?? '';
+//final currentUser = FirebaseAuth.instance.currentUser;
+//final currentuserid = currentUser?.uid ?? '';
+//String currentuserid = '';
+
 /*void main() {
   runApp(MyApp6());
 
@@ -137,7 +139,33 @@ class ChatScreen extends StatelessWidget {
     );
   }
 }*/
-class ChatListScreen extends StatelessWidget {
+class ChatListScreen extends StatefulWidget {
+  @override
+  State<ChatListScreen> createState() => _ChatListScreenState();
+}
+
+class _ChatListScreenState extends State<ChatListScreen> {
+  String currentuserid = '';
+
+  @override
+  void initState() {
+    super.initState();
+    updateUser(); // Initialize currentuserid
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      updateUser(); // Update currentuserid when the authentication state changes
+    });
+  }
+
+  void updateUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      currentuserid = user.uid;
+    } else {
+      currentuserid =
+          ''; // Set it to an empty string when no user is signed in.
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,19 +175,46 @@ class ChatListScreen extends StatelessWidget {
   }
 }
 
-class ChatList extends StatelessWidget {
+class ChatList extends StatefulWidget {
+  @override
+  State<ChatList> createState() => _ChatListState();
+}
+
+class _ChatListState extends State<ChatList> {
+  String currentuserid = '';
+
+  @override
+  void initState() {
+    super.initState();
+    updateUser(); // Initialize currentuserid
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      updateUser(); // Update currentuserid when the authentication state changes
+    });
+  }
+
+  void updateUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      currentuserid = user.uid;
+    } else {
+      currentuserid =
+          ''; // Set it to an empty string when no user is signed in.
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('messages')
-          //.where('participants', arrayContains: currentuserid)
+          .where('Participants', arrayContains: currentuserid)
           //.orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final chatDocuments = snapshot.data!.docs;
           print("Snapshot has data");
+          print(currentuserid);
           return ListView.builder(
             itemCount: chatDocuments.length,
             itemBuilder: (context, index) {
@@ -195,10 +250,36 @@ class ChatList extends StatelessWidget {
   }
 }
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   final String chatDocumentId;
 
   ChatScreen({required this.chatDocumentId});
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  String currentuserid = '';
+
+  @override
+  void initState() {
+    super.initState();
+    updateUser(); // Initialize currentuserid
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      updateUser(); // Update currentuserid when the authentication state changes
+    });
+  }
+
+  void updateUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      currentuserid = user.uid;
+    } else {
+      currentuserid =
+          ''; // Set it to an empty string when no user is signed in.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +288,7 @@ class ChatScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('messages')
-            .doc(chatDocumentId)
+            .doc(widget.chatDocumentId)
             .collection('chats')
             .orderBy('timestamp')
             .snapshots(),

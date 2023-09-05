@@ -7,16 +7,42 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-final currentUser = FirebaseAuth.instance.currentUser;
-final userId = currentUser?.uid ?? '';
+//final currentUser = FirebaseAuth.instance.currentUser;
+//final userId = currentUser?.uid ?? '';
 final CollectionReference messagesCollection =
     FirebaseFirestore.instance.collection('messages').doc().collection('chats');
 
-class chatPage5 extends StatelessWidget {
+class chatPage5 extends StatefulWidget {
   //const chatPage({Key? key}) : super(key: key);
   final String userid;
 
   chatPage5({required this.userid});
+
+  @override
+  State<chatPage5> createState() => _chatPage5State();
+}
+
+class _chatPage5State extends State<chatPage5> {
+  String currentuserid = '';
+
+  @override
+  void initState() {
+    super.initState();
+    updateUser(); // Initialize currentuserid
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      updateUser(); // Update currentuserid when the authentication state changes
+    });
+  }
+
+  void updateUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      currentuserid = user.uid;
+    } else {
+      currentuserid =
+          ''; // Set it to an empty string when no user is signed in.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +56,7 @@ class chatPage5 extends StatelessWidget {
             leading: FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
                   .collection('Users')
-                  .doc(userid)
+                  .doc(widget.userid)
                   .get(),
               builder: (BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -149,7 +175,7 @@ class chatPage5 extends StatelessWidget {
             ],
           )),
       body: chattingSection(),
-      bottomNavigationBar: Bottomsection(userid: userid),
+      bottomNavigationBar: Bottomsection(userid: widget.userid),
     );
   }
 }
@@ -168,6 +194,27 @@ class _BottomsectionState extends State<Bottomsection> {
   final controller = TextEditingController();
   getMsg(msg) {
     this.msg = msg;
+  }
+
+  String currentuserid = '';
+
+  @override
+  void initState() {
+    super.initState();
+    updateUser(); // Initialize currentuserid
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      updateUser(); // Update currentuserid when the authentication state changes
+    });
+  }
+
+  void updateUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      currentuserid = user.uid;
+    } else {
+      currentuserid =
+          ''; // Set it to an empty string when no user is signed in.
+    }
   }
 
   @override
@@ -219,7 +266,7 @@ class _BottomsectionState extends State<Bottomsection> {
                         onPressed: () {
                           sendMsg(
                               msg: msg,
-                              userId: userId,
+                              userId: currentuserid,
                               receiverId: widget.userid);
                           print(msg);
                         },
@@ -449,7 +496,7 @@ Future<void> sendMsg({
   required String msg,
   required String userId,
   required String receiverId,
-}) async {
+}) /*async {
   final chatDocumentId = '$userId' + '_' + '$receiverId';
   final docUser = FirebaseFirestore.instance
       .collection('messages')
@@ -462,8 +509,26 @@ Future<void> sendMsg({
     'senderid': userId,
     'receiverid': receiverId,
     'timestamp': FieldValue.serverTimestamp(),
-  };
+  };*/
+async {
+  // Create a chatDocumentId with sorted participant IDs without an underscore
+  final sortedIds = [userId, receiverId]..sort();
 
+  // Concatenate sorted IDs without any delimiter
+  final chatDocumentId = sortedIds.join('');
+
+  final docUser = FirebaseFirestore.instance
+      .collection('messages')
+      .doc(chatDocumentId)
+      .collection('chats')
+      .doc(); // Use auto-generated ID for messages
+  final json = {
+    'messagetxt': msg,
+    'readstatus': false,
+    'senderid': userId,
+    'receiverid': receiverId,
+    'timestamp': FieldValue.serverTimestamp(),
+  };
   // Update participants field of the message document
   final participantArray = [userId, receiverId];
   await FirebaseFirestore.instance

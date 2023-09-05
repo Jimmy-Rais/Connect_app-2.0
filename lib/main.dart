@@ -412,10 +412,10 @@ void initState() {
                                       style: TextStyle(
                                           fontSize: 12, color: Colors.grey)),
                                   onPressed: () {
+                                    FirebaseAuth.instance.signOut();
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (_) => login()));
-                                    FirebaseAuth.instance.signOut();
                                   },
                                 ),
                               ],
