@@ -27,6 +27,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'esp.dart';
 import 'mychats2.dart';
+import 'mychat.dart';
 
 /*Future<void> getUserData() async {
   final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -52,10 +53,7 @@ Future main() async {
   await Firebase.initializeApp();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => MyState(),
-      child: MyApp(),
-    ),
+    MyApp(),
   );
 }
 
@@ -96,15 +94,9 @@ class _HomePageState extends State<HomePage> {
     return false;
   }
 
-  late String _userId;
+  late String? _userId;
   late String _username;
   int _currentIndex = 1;
-
-  List<Widget> _pages = [
-    AllUsersWidget(),
-    MessageSection(),
-    MyStories(),
-  ];
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home Page',
@@ -115,48 +107,16 @@ class _HomePageState extends State<HomePage> {
         style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
   ];
 
-  /* Future<void> _getUserData() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-    _userId = user.uid;
-    final userDoc = FirebaseFirestore.instance.collection('Users').doc(_userId);
-    final userData = await userDoc.get();
-    _username = userData['user_name'];
-    print('Logged in as $_username');
-  }
+  final DatabaseReference _database = FirebaseDatabase.instance.reference();
 
   @override
-  void initState() {
-    super.initState();
-    _getUserData();
-  }
-*/
-  final DatabaseReference _database = FirebaseDatabase.instance.reference();
-  /*@override
-  void initState() {
-    super.initState();
-    _database.child('ep32_device').once().then(
-      (DataSnapshot snapshot){
-        string ledstate=snapshot.value['ledstate']['Data']
-      }
-    )
-  }*/
-  /* @override
-void initState() {
-  super.initState();
-  _database.child('ep32_device').once().then(event)
-     final dataSnapshot = event.snapshot
-    (DataSnapshot snapshot) {
-      String ledstate = snapshot.value['ledstate']['Data'];
-      // Do something with the 'ledstate' value
-    }
-  ).catchError((error) {
-    // Handle any errors that occurred during the database operation
-    print("Error: $error");
-  });
-}*/
-  @override
   Widget build(BuildContext context) {
+    List<Widget> _pages = [
+      AllUsersWidget(),
+      ChatList(),
+      //chatPage5(userid: userId),
+      MyStories(),
+    ];
     return WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
@@ -178,15 +138,6 @@ void initState() {
                   },
                   repeatForever: true,
                 ),
-                /*Text(
-                "Connect",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-          
-                  fontStyle: FontStyle.italic,
-                ),
-              ),*/
                 backgroundColor: Color.fromARGB(73, 66, 66, 66),
                 /*_isDarkMode ? Colors.grey[800] : Colors.grey[100],*/
                 leading: Center(
@@ -199,17 +150,6 @@ void initState() {
                         backgroundImage: AssetImage('images/avatar/Pierre.jpg'),
                       ),
                     ),
-                    /*Container(
-                    padding: EdgeInsets.only(top: 8, left: 15),
-                    child: Text(
-                      "Connect",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  )*/
                   ],
                 )),
                 actions: [
@@ -224,28 +164,6 @@ void initState() {
                     );
                   })
                 ],
-                /*actions: [
-            Switch(
-              value: _isDarkMode,
-              onChanged: (value) {
-                setState(() {
-                  _isDarkMode = value;
-                });
-              },
-            )
-            /*   IconButton(
-              onPressed: () {
-                setState(() {
-                  _isDarkMode = !_isDarkMode;
-                });
-              },
-              icon: Icon(
-                Icons.switch_access_shortcut,
-                size: 30,
-                color: Colors.black,
-              ),
-            ),*/
-          ],*/
               )),
           drawer: Drawer(
             backgroundColor: Color.fromRGBO(66, 66, 66, 1),

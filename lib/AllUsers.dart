@@ -1,7 +1,10 @@
+import 'package:Connect/chat.dart';
+import 'package:Connect/mychats2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'mychat.dart';
+import 'user.dart';
 
 class AllUsersWidget extends StatefulWidget {
   @override
@@ -11,7 +14,17 @@ class AllUsersWidget extends StatefulWidget {
 class _AllUsersWidgetState extends State<AllUsersWidget> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String? currentuserid = FirebaseAuth.instance.currentUser?.uid;
+  /*String userId = ''; // Initialize userId as an empty string
 
+  // Call the method to retrieve the userid
+  Future<void> fetchUserId() async {
+    final userData = UserData();
+    final userid = await userData.callUserId();
+    setState(() {
+      userId = userid;
+    });
+  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +46,13 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
           if (!snapshot.hasData) {
             return Text('Loading...');
           }
-          final users = snapshot.data!.docs
-              .where((doc) => doc.id != _auth.currentUser!.uid);
+          final users = snapshot.data?.docs
+                  .where((doc) => doc.id != _auth.currentUser?.uid)
+                  .toList() ??
+              [];
+
+          /*final users = snapshot.data!.docs
+              .where((doc) => doc.id != _auth.currentUser!.uid);*/
           return ListView.builder(
             itemCount: users.length,
             itemBuilder: (BuildContext context, int index) {
@@ -42,7 +60,12 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
               final photoUrl = user.get('photo_url');
               final userName = user.get('user_name');
               final userid = user.id;
+              final sortedIds = [currentuserid, userid]..sort();
 
+              // Concatenate sorted IDs without any delimiter
+              final chatDocumentId = sortedIds.join('');
+              //  List<String> sortedUserIds = List.from([currentuserid, userid])..sort().toString().j=;
+              print(chatDocumentId);
               return InkWell(
                   onTap: () {},
                   child: Container(
@@ -51,11 +74,12 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        // Navigate to user detail page and pass userId
+                        //Navigate to user detail page and pass userId
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => chatPage5(userid: user.id),
+                            builder: (context) =>
+                                ChatScreen(chatDocumentId: chatDocumentId),
                           ),
                         );
                       },

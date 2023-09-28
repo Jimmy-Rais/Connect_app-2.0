@@ -6,9 +6,197 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+/*
+
+return Scaffold(
+        body: Stack(children: <Widget>[
+      Container(
+        height: 850,
+        width: 2000,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/avatar/wal.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        //child: Image(image: AssetImage("images/avatar/home.jpeg")),
+      ),
+      Container(
+        padding: EdgeInsets.only(bottom: 10),
+        // height: double.infinity,
+        width: 280,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40),
+            topRight: Radius.circular(40),
+          ),
+        ),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('messages')
+              .doc(widget.chatDocumentId)
+              .collection('chats')
+              .orderBy('timestamp')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final chatMessages = snapshot.data!.docs;
+
+              return ListView.builder(
+                itemCount: chatMessages.length,
+                itemBuilder: (context, index) {
+                  final message = chatMessages[index];
+                  final messageText = message['messagetxt'];
+                  final senderId = message['senderid'];
+                  final receiverId = message['receiverid'];
+                  final participants = [senderId];
+                  final isCurrentUserSender = //senderId ? true : false;
+                      participants.contains(currentuserid);
+
+                  return Align(
+                    alignment: isCurrentUserSender
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: isCurrentUserSender ? Colors.blue : Colors.grey,
+                      ),
+                      child: Text(
+                        messageText,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            return CircularProgressIndicator();
+          },
+        ),
+
+        /* StreamBuilder<QuerySnapshot>(
+            stream: ,.,,..,.,messagesCollection.snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong');
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text('Loading...');
+              }
+
+              return ListView.builder(
+                reverse: true,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final messages = snapshot.data!.docs;
+                  final sortedMessages = messages
+                      .where((doc) => doc['timestamp'] != null)
+                      .toList() // filter out documents with null timestamps
+                    ..sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
+                  if (index >= sortedMessages.length) {
+                    // handle case where index is out of range
+                    return Container();
+                  }
+                  final message = sortedMessages[index];
+                  final timestamp = message['timestamp'] as Timestamp;
+                  final dateTime = timestamp.toDate();
+                  final formattedDateTime =
+                      DateFormat('MMMM dd,hh:mm a').format(dateTime);
+                  /* itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                final message = snapshot.data!.docs[index];*/
+                  return ListTile(
+                      title: Stack(children: <Widget>[
+                    Container(
+                        constraints: BoxConstraints(
+                            minWidth: 50,
+                            maxWidth: double.infinity,
+                            minHeight: 45,
+                            maxHeight: double.infinity),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
+                          ),
+                          color: Color.fromARGB(255, 2, 32, 48),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  message['message'],
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 130),
+                                      child: Text(
+                                        formattedDateTime,
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Icon(
+                                      Icons.check,
+                                      color: Colors.grey,
+                                      size: 10,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ) /*FittedBox(
+                      fit: BoxFit.none, // BoxFit.scaleDown,
+                      child: Text(
+                        message['message'],
+                          style: TextStyle(color: Colors.white),
+                      )),*/
+                        //subtitle: Text(message['body']),
+                        ),
+                  ]));
+                },
+              );
+            },
+          )*/
+/*Column(
+          children: [
+            SizedBox(height: 10),
+            Text(
+              "Online 30 minutes ago",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+            SizedBox(height: 50),
+          ],
+        ),*/
+      )
+    ]));
+
+*/
 
 //final currentUser = FirebaseAuth.instance.currentUser;
 //final userId = currentUser?.uid ?? '';
+GlobalKey<_chatPage5State> mainWidgetKey = GlobalKey<_chatPage5State>();
+
 final CollectionReference messagesCollection =
     FirebaseFirestore.instance.collection('messages').doc().collection('chats');
 
@@ -23,7 +211,21 @@ class chatPage5 extends StatefulWidget {
 }
 
 class _chatPage5State extends State<chatPage5> {
+  String chatDocumentId = ""; // Initialize with an empty string
+
   String currentuserid = '';
+  // Function to update chatDocumentId
+  void updateChatDocumentId(String newChatDocumentId) {
+    chatDocumentId = newChatDocumentId; // Update the chatDocumentId
+  }
+
+  // Function to handle ListTile onTap
+  void handleListTileTap(String chatDocId) {
+    // Call the updateChatDocumentId function to update the chatDocumentId
+    updateChatDocumentId(chatDocId);
+
+    // ... (Navigate to ChattingSection if needed)
+  }
 
   @override
   void initState() {
@@ -163,18 +365,56 @@ class _chatPage5State extends State<chatPage5> {
           ],
         ),*/
 
-            actions: [
-              IconButton(
+            actions: <Widget>[
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('messages')
+                    .where('Participants', arrayContains: currentuserid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final chatDocuments = snapshot.data!.docs;
+
+                    // ... (The rest of your code from the original snippet)
+
+                    return Container(
+                      width: 300, // Adjust the width as needed
+                      child: ListView.builder(
+                        itemCount: chatDocuments.length,
+                        itemBuilder: (context, index) {
+                          final chatDoc = chatDocuments[index];
+                          handleListTileTap(chatDoc.id);
+                          /* setState(() {
+                            chatDocumentId =
+                                chatDoc.id; // Update the chatDocumentId
+                          });*/
+
+                          // Access the 'chats' subcollection of the chat document
+                          final chatSubcollection =
+                              chatDoc.reference.collection('chats');
+
+                          // ... (The rest of your code for each ListTile)
+                        },
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  return CircularProgressIndicator();
+                },
+              ),
+            ],
+
+            /*IconButton(
                 icon: Icon(
                   Icons.call,
                   color: Colors.white,
                   size: 23,
                 ),
                 onPressed: () {},
-              ),
-            ],
+              ),*/
           )),
-      body: chattingSection(),
+      body: chattingSection(chatDocumentId: chatDocumentId),
       bottomNavigationBar: Bottomsection(userid: widget.userid),
     );
   }
@@ -310,7 +550,8 @@ class _BottomsectionState extends State<Bottomsection> {
 
 //Chatting section
 class chattingSection extends StatefulWidget {
-  const chattingSection({Key? key}) : super(key: key);
+  final String chatDocumentId;
+  chattingSection({required this.chatDocumentId});
 
   @override
   State<chattingSection> createState() => _chattingSectionState();
@@ -318,34 +559,208 @@ class chattingSection extends StatefulWidget {
 
 class _chattingSectionState extends State<chattingSection> {
   final List messages = [];
+  String currentuserid = '';
+  String chatDocumentId = ""; // Initialize with an empty string
+
+  // Function to update chatDocumentId
+  void updateChatDocumentId(String newChatDocumentId) {
+    setState(() {
+      chatDocumentId = newChatDocumentId; // Update the chatDocumentId
+    });
+  }
+
+  // Function to handle ListTile onTap
+  void handleListTileTap(String chatDocId) {
+    // Call the updateChatDocumentId function to update the chatDocumentId
+    updateChatDocumentId(chatDocId);
+
+    // ... (Navigate to ChattingSection if needed)
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    updateUser();
+    // Initialize currentuserid
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      updateUser(); // Update currentuserid when the authentication state changes
+    });
+  }
+
+  void updateUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      currentuserid = user.uid;
+    } else {
+      currentuserid =
+          ''; // Set it to an empty string when no user is signed in.
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(children: <Widget>[
-      Container(
-        height: 850,
-        width: 2000,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/avatar/wal.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        //child: Image(image: AssetImage("images/avatar/home.jpeg")),
-      ),
-      Container(
-          padding: EdgeInsets.only(bottom: 10),
-          // height: double.infinity,
-          width: 280,
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40),
-              topRight: Radius.circular(40),
-            ),
-          ),
-          child: StreamBuilder<QuerySnapshot>(
-            stream: messagesCollection.snapshots(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('messages')
+          .where('Participants', arrayContains: currentuserid)
+          //.orderBy('timestamp', descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final chatDocuments = snapshot.data!.docs;
+          print("Snapshot has data");
+
+          /*    final List<dynamic> participants = (chatDocuments['Participants'] as List<dynamic>) ?? [];
+          final otherParticipant = participants.firstWhere(
+            (participantId) => participantId != currentuserid,
+            orElse: () => null,
+          );
+          final List<dynamic> participants = (chatDocuments['Participants'] as List<dynamic>) ?? [];
+final otherParticipant = participants.firstWhere(
+  (participantId) => participantId.toString() != currentuserid,
+  orElse: () => null,
+);*/
+
+          // Now, otherParticipant will contain the ID of the other participant
+
+          print(currentuserid);
+
+          //Retrieve the other partcicipant id
+          String? otherUserId;
+          return ListView.builder(
+            itemCount: chatDocuments.length,
+            itemBuilder: (context, index) {
+              final chatDoc = chatDocuments[index];
+
+              // Access the 'chats' subcollection of the chat document
+              final chatSubcollection = chatDoc.reference.collection('chats');
+
+              // Retrieve the sender ID and receiver ID from the subcollection
+              return StreamBuilder<QuerySnapshot>(
+                stream: chatSubcollection.snapshots(),
+                builder: (context, subSnapshot) {
+                  if (subSnapshot.hasData && subSnapshot.data != null) {
+                    final docs = subSnapshot.data!.docs;
+
+                    if (docs.isNotEmpty) {
+                      // Assuming there's at least one document in the 'chats' subcollection
+                      final chatData = docs.first;
+
+                      // Access sender ID and receiver ID from the subcollection data
+                      final senderId = chatData['senderid'];
+                      final receiverId = chatData['receiverid'];
+                      if (senderId != currentuserid) {
+                        otherUserId = senderId;
+                      } else if (receiverId != currentuserid) {
+                        otherUserId = receiverId;
+                      }
+                      return ListTile(
+                        title: FutureBuilder<DocumentSnapshot>(
+                          future: FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(otherUserId)
+                              .get(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+                            if (!snapshot.hasData || !snapshot.data!.exists) {
+                              return Text('User data not found');
+                            }
+
+                            final userData =
+                                snapshot.data!.data() as Map<String, dynamic>;
+                            final otherUserName =
+                                userData['user_name'] as String? ?? 'User';
+                            final otherUserProfilePhoto =
+                                userData['photo_url'] as String?;
+
+                            return Scaffold(
+                                body: Stack(children: <Widget>[
+                              Container(
+                                height: 850,
+                                width: 2000,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage("images/avatar/wal.jpg"),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                //child: Image(image: AssetImage("images/avatar/home.jpeg")),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(bottom: 10),
+                                // height: double.infinity,
+                                width: 280,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(40),
+                                    topRight: Radius.circular(40),
+                                  ),
+                                ),
+                                child: StreamBuilder<QuerySnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('messages')
+                                      .doc(widget.chatDocumentId)
+                                      .collection('chats')
+                                      .orderBy('timestamp')
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      final chatMessages = snapshot.data!.docs;
+
+                                      return ListView.builder(
+                                        itemCount: chatMessages.length,
+                                        itemBuilder: (context, index) {
+                                          final message = chatMessages[index];
+                                          final messageText =
+                                              message['messagetxt'];
+                                          final senderId = message['senderid'];
+                                          final receiverId =
+                                              message['receiverid'];
+                                          final participants = [senderId];
+                                          final isCurrentUserSender = //senderId ? true : false;
+                                              participants
+                                                  .contains(currentuserid);
+
+                                          return Align(
+                                            alignment: isCurrentUserSender
+                                                ? Alignment.centerRight
+                                                : Alignment.centerLeft,
+                                            child: Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 5, horizontal: 10),
+                                              padding: EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: isCurrentUserSender
+                                                    ? Colors.blue
+                                                    : Colors.grey,
+                                              ),
+                                              child: Text(
+                                                messageText,
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    }
+                                    return CircularProgressIndicator();
+                                  },
+                                ),
+
+                                /* StreamBuilder<QuerySnapshot>(
+            stream: ,.,,..,.,messagesCollection.snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
@@ -438,7 +853,7 @@ class _chattingSectionState extends State<chattingSection> {
                 },
               );
             },
-          )
+          )*/
 /*Column(
           children: [
             SizedBox(height: 10),
@@ -452,8 +867,82 @@ class _chattingSectionState extends State<chattingSection> {
             SizedBox(height: 50),
           ],
         ),*/
-          )
-    ]));
+                              )
+                            ]));
+                          },
+                        ),
+                        onTap: () {
+                          /*  Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatScreen(chatDocumentId: chatDoc.id),
+                            ),
+                          );*/
+                        },
+                      );
+
+                      /*    return ListTile(
+                        title: Text(
+                          'Chat with $otherUserId',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatScreen(chatDocumentId: chatDoc.id),
+                            ),
+                          );
+                        },
+                      );*/
+                    }
+                  }
+
+                  // Handle loading state, no documents, or error
+                  return CircularProgressIndicator(); // or another loading indicator or error message
+                },
+              );
+            },
+          );
+
+          /*  return
+           ListView.builder(
+            itemCount: chatDocuments.length,
+            itemBuilder: (context, index) {
+              final chatDoc = chatDocuments[index];
+
+              return ListTile(
+                title: Text(
+                  'Chat with ${chatDoc.id}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                  ),
+                ), // Use the chat document ID
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ChatScreen(chatDocumentId: chatDoc.id),
+                    ),
+                  );
+                },
+              );
+            },
+          );*/
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+          print("No data");
+        }
+        return CircularProgressIndicator();
+      },
+    );
   }
 }
 
