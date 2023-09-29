@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'image.dart';
 import 'image_picker.dart';
 import 'package:intl/intl.dart';
+import 'storydetail.dart';
 
 final CollectionReference messagesCollection =
     FirebaseFirestore.instance.collection('Messages');
@@ -250,9 +251,9 @@ class Stories extends StatelessWidget {
                             }
                             return InkWell(
                               onTap: () => {
-                                /*Navigator.of(context).push(MaterialPageRoute(
+                                Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => StoryDetailsPage(
-                                        storySnapshot: document))),*/
+                                        storySnapshot: document))),
                               },
                               splashColor: Color.fromARGB(255, 99, 178, 223),
                               child: Container(
@@ -340,7 +341,7 @@ class Stories extends StatelessWidget {
   }
 }
 
-class StoryDetailsPage extends StatefulWidget {
+/*class StoryDetailsPage extends StatefulWidget {
   final DocumentSnapshot storySnapshot;
 
   const StoryDetailsPage({Key? key, required this.storySnapshot})
@@ -361,9 +362,9 @@ class _StoryDetailsPageState extends State<StoryDetailsPage> {
     FirebaseFirestore.instance.collection('Users').doc(userId).get();
     return Scaffold(
       backgroundColor: Color.fromARGB(219, 7, 44, 66),
-      /*  appBar: AppBar(
+      appBar: AppBar(
         title: Text(''),
-      ),*/
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -412,7 +413,7 @@ class _StoryDetailsPageState extends State<StoryDetailsPage> {
     );
   }
 }
-
+*/
 
 /*class Stories extends StatelessWidget {
   final List MyStories = [

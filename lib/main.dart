@@ -112,7 +112,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
-      AllUsersWidget(),
+      Container(),
+      //AllUsersWidget(),
       ChatList(),
       //chatPage5(userid: userId),
       MyStories(),
@@ -375,13 +376,16 @@ class _HomePageState extends State<HomePage> {
                       'LED Status: $ledStatus',
                       style: TextStyle(fontSize: 18),
                     ),*/
+                    SizedBox(height: 20),
                     Container(
-                      padding: EdgeInsets.only(right: 150),
+                      padding: EdgeInsets.only(
+                        right: 10,
+                      ),
                       child: Text(
                         "Made in DR Congo",
                         style: GoogleFonts.acme(
-                          fontSize: 13,
-                          color: Colors.grey,
+                          fontSize: 10,
+                          color: const Color.fromARGB(92, 158, 158, 158),
                         ),
                       ),
                     ),

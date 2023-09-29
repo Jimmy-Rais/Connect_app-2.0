@@ -226,7 +226,7 @@ class _loginState extends State<login> {
             curve: Curves.easeIn,
             child: Row(
               children: [
-                SizedBox(width: 140),
+                SizedBox(width: 120),
                 Text(
                   "Made  in  DR CONGO",
                   style: GoogleFonts.acme(
