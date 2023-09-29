@@ -30,7 +30,7 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
     return Scaffold(
       backgroundColor: Color.fromARGB(5, 66, 66, 66),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(219, 7, 44, 66),
+        backgroundColor: Color.fromARGB(73, 66, 66, 66),
         title: Text(
           'Start a new discussion',
           style: TextStyle(fontSize: 18),
