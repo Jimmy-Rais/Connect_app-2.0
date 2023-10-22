@@ -103,8 +103,6 @@ class _AllUsersWidgetState extends State<AllUsersWidget> {
                   .toList() ??
               [];
 
-          /*final users = snapshot.data!.docs
-              .where((doc) => doc.id != _auth.currentUser!.uid);*/
           return ListView.builder(
             itemCount: users.length,
             itemBuilder: (BuildContext context, int index) {

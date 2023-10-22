@@ -12,6 +12,7 @@ import 'mychat.dart';
 import 'user.dart';
 import 'AllUsers.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 //final currentUser = FirebaseAuth.instance.currentUser;
 //final currentuserid = currentUser?.uid ?? '';
 //String currentuserid = '';
@@ -150,7 +151,7 @@ class ChatListScreen extends StatefulWidget {
 
 class _ChatListScreenState extends State<ChatListScreen> {
   String currentuserid = '';
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
@@ -193,7 +194,7 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
   String currentuserid = '';
-  late String otherUserId;
+  static String otherUserId = "";
   double _opacity = 0.0;
   @override
   void initState() {
@@ -202,7 +203,7 @@ class _ChatListState extends State<ChatList> {
     updateUser(); // Initialize currentuserid
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       updateUser();
-      updateotherUserId(); // Update currentuserid when the authentication state changes
+      //  updateotherUserId(); // Update currentuserid when the authentication state changes
     });
   }
 
@@ -214,14 +215,14 @@ class _ChatListState extends State<ChatList> {
     });
   }
 
-  void updateotherUserId() {
+  /* void updateotherUserId() {
     String user = otherUserId.toString();
     if (user != null) {
       otherUserId = user;
     } else {
       otherUserId = ''; // Set it to an empty string when no user is signed in.
     }
-  }
+  }*/
 
   void updateUser() {
     User? user = FirebaseAuth.instance.currentUser;
@@ -292,11 +293,8 @@ final otherParticipant = participants.firstWhere(
                       } else {
                         otherUserId = "";
                       }
+                      print("id initialized before= $otherUserId");
 
-                      /*setState(() {
-                        otherUserId = otherUserId;
-                        updateotherUserId();
-                      });*/
                       return ListTile(
                         title: FutureBuilder<DocumentSnapshot>(
                           future: FirebaseFirestore.instance
@@ -314,267 +312,287 @@ final otherParticipant = participants.firstWhere(
                             if (!snapshot.hasData || !snapshot.data!.exists) {
                               return Container();
                             }
-                            print("THE PROB444444 IS HERE $otherUserId");
+                            print("id initialized= $otherUserId");
                             final userData =
                                 snapshot.data!.data() as Map<String, dynamic>;
                             final otherUserName =
                                 userData['user_name'] as String? ?? 'User';
+
                             final otherUserProfilePhoto =
                                 userData['photo_url'] as String?;
-                            print("sender id=" + senderId);
-                            print("reciever id=" + receiverId);
-                            return Row(
-                              children: [
-                                //SizedBox(height: 1),
-                                //Padding(
-                                //padding: EdgeInsets.only(top: 1, left: 8)),
-                                Container(
-                                  height: 45,
-                                  width: 45,
-                                  padding: EdgeInsets.all(1),
-                                  decoration: BoxDecoration(
+                            final FirebaseAuth _auth = FirebaseAuth.instance;
+                            final FirebaseFirestore _firestore =
+                                FirebaseFirestore.instance;
+                            /*return InkWell(
+                              onTap: () async {
+                                // Retrieve the selected user's ID without fetching all users from Firestore
+                                final QuerySnapshot<Map<String, dynamic>>
+                                    snapshot = await _firestore
+                                        .collection('Users')
+                                        .where(FieldPath.documentId,
+                                            isNotEqualTo:
+                                                _auth.currentUser?.uid)
+                                        .limit(1)
+                                        .get();
 
-                                      //shape: BoxShape.circle,
-                                      //borderRadius: BorderRadius.circular(30),
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(60),
-                                        topRight: Radius.circular(60),
-                                        bottomLeft: Radius.circular(60),
-                                        bottomRight: Radius.circular(60),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.shade700,
-                                          // Color of the shadow
-                                          spreadRadius:
-                                              1, // Spread radius of the shadow
-                                          blurRadius:
-                                              1, // Blur radius of the shadow
-                                          offset: Offset(1,
-                                              1), // Offset of the shadow (horizontal, vertical)
+                                if (snapshot.docs.isNotEmpty) {
+                                  final user = snapshot.docs.first;
+                                  final userId = user.id;
+
+                                  // Navigate to the chat screen with the retrieved user's ID
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          ChatScreen(
+                                              chatDocumentId: chatDoc.id,
+                                              otheruserid: userId),
+                                      /*transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        var begin = 0.0;
+                                        var end = 1.0;
+                                        var curve = Curves.ease;
+                                        var tween = Tween(
+                                                begin: begin, end: end)
+                                            .chain(CurveTween(curve: curve));
+                                        return ScaleTransition(
+                                          scale: animation.drive(tween),
+                                          child: child,
+                                        );*/
+                                    ),
+                                  );
+                                }
+                              },*/
+                            return InkWell(
+                              onTap: () async {
+                                await Future.delayed(
+                                    Duration(milliseconds: 300));
+
+                                // Retrieve the selected user's ID from Firestore
+                                final QuerySnapshot snapshot =
+                                    await _firestore.collection('Users').get();
+                                final users = snapshot.docs
+                                    .where((doc) =>
+                                        doc.id != _auth.currentUser?.uid)
+                                    .toList();
+
+                                if (users.isNotEmpty) {
+                                  final user = users.elementAt(index);
+                                  final userId = user.id;
+
+                                  // Navigate to the chat screen with the retrieved user's ID
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          ChatScreen(
+                                              chatDocumentId: chatDoc.id,
+                                              otheruserid: userId),
+                                      /* transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        var begin = 0.0;
+                                        var end = 1.0;
+                                        var curve = Curves.ease;
+                                        var tween = Tween(
+                                                begin: begin, end: end)
+                                            .chain(CurveTween(curve: curve));
+                                        return ScaleTransition(
+                                          scale: animation.drive(tween),
+                                          child: child,
+                                        );
+                                      },*/
+                                    ),
+                                  );
+                                }
+                              },
+                              /*return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        ChatScreen(
+                                            chatDocumentId: chatDoc.id,
+                                            otheruserid: otherUserId),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      var begin = 0.0;
+                                      var end = 1.0;
+                                      var curve = Curves.ease;
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
+                                      return ScaleTransition(
+                                        scale: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },*/
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 45,
+                                    width: 45,
+                                    padding: EdgeInsets.all(1),
+                                    decoration: BoxDecoration(
+
+                                        //shape: BoxShape.circle,
+                                        //borderRadius: BorderRadius.circular(30),
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(60),
+                                          topRight: Radius.circular(60),
+                                          bottomLeft: Radius.circular(60),
+                                          bottomRight: Radius.circular(60),
                                         ),
-                                        BoxShadow(
-                                          color: const Color.fromARGB(
-                                              141, 176, 190, 197),
-                                          // Color of the shadow
-                                          spreadRadius:
-                                              1, // Spread radius of the shadow
-                                          blurRadius:
-                                              1, // Blur radius of the shadow
-                                          offset: Offset(-1,
-                                              -1), // Offset of the shadow (horizontal, vertical)
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.shade700,
+                                            // Color of the shadow
+                                            spreadRadius:
+                                                1, // Spread radius of the shadow
+                                            blurRadius:
+                                                1, // Blur radius of the shadow
+                                            offset: Offset(1,
+                                                1), // Offset of the shadow (horizontal, vertical)
+                                          ),
+                                          BoxShadow(
+                                            color: const Color.fromARGB(
+                                                141, 176, 190, 197),
+                                            // Color of the shadow
+                                            spreadRadius:
+                                                1, // Spread radius of the shadow
+                                            blurRadius:
+                                                1, // Blur radius of the shadow
+                                            offset: Offset(-1,
+                                                -1), // Offset of the shadow (horizontal, vertical)
+                                          ),
+                                        ],
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              const Color.fromARGB(
+                                                  107, 238, 238, 238),
+                                              const Color.fromARGB(
+                                                  98, 189, 189, 189),
+                                            ])),
+                                    child: AnimatedOpacity(
+                                      opacity: _opacity,
+                                      duration: Duration(milliseconds: 2000),
+                                      curve: Curves.easeIn,
+                                      child: CircleAvatar(
+                                          child: ClipOval(
+                                        child: SizedBox(
+                                            width: 60,
+                                            height: 60,
+                                            child: CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    otherUserProfilePhoto!))),
+                                      )),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Expanded(
+                                      child: Column(children: [
+                                    Row(
+                                      // Max Space between row elements
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            SizedBox(height: 20),
+                                            AnimatedOpacity(
+                                              opacity: _opacity,
+                                              duration:
+                                                  Duration(milliseconds: 5000),
+                                              curve: Curves.easeIn,
+                                              child: DefaultTextStyle(
+                                                style: GoogleFonts.acme(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                ),
+                                                child: Text(
+                                                  otherUserName,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontStyle: FontStyle.italic,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            // Line return
+                                            Wrap(
+                                              children: [
+                                                Text(
+                                                  'hey....',
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                    // fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "12:02",
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 10,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            1 != 0
+                                                ? Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      color: Color.fromARGB(
+                                                          255, 99, 178, 223),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Text(
+                                                      1.toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(),
+                                          ],
                                         ),
                                       ],
-                                      gradient: LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [
-                                            const Color.fromARGB(
-                                                107, 238, 238, 238),
-                                            const Color.fromARGB(
-                                                98, 189, 189, 189),
-                                          ])),
-                                  child: AnimatedOpacity(
-                                    opacity: _opacity,
-                                    duration: Duration(milliseconds: 2000),
-                                    curve: Curves.easeIn,
-                                    child: CircleAvatar(
-                                        child: ClipOval(
-                                      child: SizedBox(
-                                          width: 60,
-                                          height: 60,
-                                          child: CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  otherUserProfilePhoto!)
-                                              /* Back(
-                                          fit: BoxFit.cover,
-                                        image: AssetImage('images/Jim.JPG'),
-                                        ),
-                                      ),*/
-                                              )),
-                                    )),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                    child: Column(children: [
-                                  Row(
-                                    // Max Space between row elements
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        // Start from the right
-                                        //crossAxisAlignment:
-                                        // CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(height: 20),
-                                          AnimatedOpacity(
-                                            opacity: _opacity,
-                                            duration:
-                                                Duration(milliseconds: 5000),
-                                            curve: Curves.easeIn,
-                                            child: DefaultTextStyle(
-                                              style: GoogleFonts.acme(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                              ),
-                                              child: Text(
-                                                otherUserName,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontStyle: FontStyle.italic,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 13,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          // Line return
-                                          Wrap(
-                                            children: [
-                                              Text(
-                                                'hey....',
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 12,
-                                                  // fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "12:02",
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 10,
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          1 != 0
-                                              ? Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                    color: Color.fromARGB(
-                                                        255, 99, 178, 223),
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: Text(
-                                                    1.toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container(),
-                                        ],
-                                      ),
-                                    ],
-                                    /*SizedBox(
-                                    width: 16), // Adjust the spacing as needed
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      otherUserName,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                      ),
                                     ),
-                                    SizedBox(height: 7),
-                                    Text(
-                                      "hey...",
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 11,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],*/
-                                  ),
-                                  Divider(
-                                    height: 30,
-                                    thickness: 1,
-                                    //indent: 20,
-                                    // endIndent: 0,
-                                    color: Colors.grey,
-                                  ),
-                                ])),
-                              ],
+                                    Divider(
+                                      height: 30,
+                                      thickness: 1,
+                                      //indent: 20,
+                                      // endIndent: 0,
+                                      color: Colors.grey,
+                                    ),
+                                  ])),
+                                ],
+                              ),
                             );
                           },
                         ),
-                        onTap: () {
-                          setState(() {
-                            otherUserId = otherUserId;
-                            updateotherUserId();
-                          });
-                          //print("THE PROB IS HERE $otherUserId");
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      ChatScreen(
-                                          chatDocumentId: chatDoc.id,
-                                          otheruserid: otherUserId),
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                var begin = 0.0;
-                                var end = 1.0;
-                                var curve = Curves.ease;
-                                var tween = Tween(begin: begin, end: end)
-                                    .chain(CurveTween(curve: curve));
-                                return ScaleTransition(
-                                  scale: animation.drive(tween),
-                                  child: child,
-                                );
-                              },
-                            ),
-                          );
-                          /* .....Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatScreen(
-                                  chatDocumentId: chatDoc.id,
-                                  userid: otherUserId ?? ""),
-                            ),
-                          );*/
-                        },
                       );
-
-                      /*    return ListTile(
-                        title: Text(
-                          'Chat with $otherUserId',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ChatScreen(chatDocumentId: chatDoc.id),
-                            ),
-                          );
-                        },
-                      );*/
                     }
                   }
 
@@ -584,33 +602,6 @@ final otherParticipant = participants.firstWhere(
               );
             },
           );
-
-          /*  return
-           ListView.builder(
-            itemCount: chatDocuments.length,
-            itemBuilder: (context, index) {
-              final chatDoc = chatDocuments[index];
-
-              return ListTile(
-                title: Text(
-                  'Chat with ${chatDoc.id}',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                  ),
-                ), // Use the chat document ID
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ChatScreen(chatDocumentId: chatDoc.id),
-                    ),
-                  );
-                },
-              );
-            },
-          );*/
         } else if (snapshot.hasError) {
           return Container();
         }
@@ -681,9 +672,6 @@ class _ChatScreenState extends State<ChatScreen> {
               if (!snapshot.hasData) {
                 return Text('Loading...');
               }
-              /* if (!snapshot.data.exists) {
-        return Text('User Not Found');
-      }*/
 
               final userData = snapshot.data!.data() as Map<String, dynamic>;
               final userName = userData['user_name'];
@@ -707,8 +695,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     width: 33,
                     padding: EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                        //shape: BoxShape.circle,
-                        //borderRadius: BorderRadius.circular(30),
                         color: Colors.grey[300],
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(60),
@@ -752,24 +738,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             height: 60,
                             child: CircleAvatar(
                               backgroundImage: NetworkImage(userPhotoUrl),
-
-                              /* Back(
-                                            fit: BoxFit.cover,
-                                          image: AssetImage('images/Jim.JPG'),
-                                          ),
-                                        ),*/
                             )),
                       )),
                     ),
                   ),
-                  /*Container(
-                    height: 70,
-                width: 70,
-                padding: EdgeInsets.all(10),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(userPhotoUrl),
-                    ),
-                  ),*/
                   SizedBox(width: 14),
                   AnimatedOpacity(
                     opacity: _opacity,
@@ -805,28 +777,6 @@ class _ChatScreenState extends State<ChatScreen> {
           // Other AppBar properties...
         ),
         bottomNavigationBar: Bottomsection(userid: widget.otheruserid),
-        /*bottomNavigationBar: StreamBuilder<QuerySnapshot>(
-          stream: _firestore.collection('Users').snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            if (!snapshot.hasData) {
-              return Text('Loading...');
-            }
-            final users = snapshot.data!.docs
-                .where((doc) => doc.id != _auth.currentUser!.uid);
-            return ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final user = users.elementAt(index);
-                  final photoUrl = user.get('photo_url');
-                  final userName = user.get('user_name');
-                  final userid = user.id;
-                });
-            //return Bottomsection(userid: userid);
-          }),*/
         body: Stack(children: [
           Container(
             height: MediaQuery.of(context).size.height,
@@ -958,31 +908,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-/*Stack(children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("images/avatar/wal.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      //child: Image(image: AssetImage("images/avatar/home.jpeg")),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: isCurrentUserSender ? Colors.blue : Colors.grey,
-                      ),
-                      child: Text(
-                        messageText,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ]),*/
 class Bottomsection extends StatefulWidget {
   //late String userid;
   String userid;
@@ -1005,39 +930,10 @@ class _BottomsectionState extends State<Bottomsection> {
       updateUser(); // Update currentuserid when the authentication state changes
     });
   }
-  // Method to get the userid asynchronously
-  // Initialize userId as an empty string
-
-  // Method to get the userid asynchronously
-  /*Future<void> callUserId() async {
-    try {
-      final snapshot =
-          await FirebaseFirestore.instance.collection('Users').get();
-      final users = snapshot.docs.where((doc) {
-        return doc.id != FirebaseAuth.instance.currentUser?.uid;
-      });
-
-      if (users.isNotEmpty) {
-        final user = users.first;
-        setState(() {
-          userid = user.id;
-          print("jim see this " +
-              userid); // Assign userid to the local variable userId
-        });
-      }
-    } catch (e) {
-      print('Error retrieving userid: $e');
-    }
-  }*/
 
   getMsg(msg) {
     this.msg = msg;
   }
-
-  // Fetch the userid when needed
-  /*Future<void> fetchUserid() async {
-    await callUserId();
-  }*/
 
   String currentuserid = '';
 

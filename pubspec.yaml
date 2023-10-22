@@ -48,6 +48,7 @@ dependencies:
   flag: ^7.0.0
   google_fonts: ^5.1.0
   provider: ^6.0.5
+  flutter_keyboard_visibility: ^5.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
