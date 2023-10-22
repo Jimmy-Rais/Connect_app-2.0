@@ -125,19 +125,25 @@ class _HomePageState extends State<HomePage> {
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(60.0),
               child: AppBar(
-                title: AnimatedTextKit(
-                  animatedTexts: [
-                    ScaleAnimatedText('Connect',
-                        textStyle: GoogleFonts.acme(
-                          fontSize: 15,
-                        )),
-                    ScaleAnimatedText('Connect'),
-                    ScaleAnimatedText('Connect'),
-                  ],
-                  onTap: () {
-                    print("Tap Event");
-                  },
-                  repeatForever: true,
+                title: DefaultTextStyle(
+                  style: GoogleFonts.acme(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      ScaleAnimatedText('Connect',
+                          textStyle: GoogleFonts.acme(
+                            fontSize: 15,
+                          )),
+                      ScaleAnimatedText('Connect'),
+                      ScaleAnimatedText('Connect'),
+                    ],
+                    onTap: () {
+                      print("Tap Event");
+                    },
+                    repeatForever: true,
+                  ),
                 ),
                 backgroundColor: Color.fromARGB(73, 66, 66, 66),
                 /*_isDarkMode ? Colors.grey[800] : Colors.grey[100],*/

@@ -183,11 +183,41 @@ class MyStatut extends StatelessWidget {
                               DateFormat('MMM d, y').format(date) + ' at $time';
                         }
 */
-class Stories extends StatelessWidget {
+class Stories extends StatefulWidget {
+  Stories({Key? key}) : super(key: key);
+
+  @override
+  State<Stories> createState() => _StoriesState();
+}
+
+class _StoriesState extends State<Stories> {
+  double _opacity = 0.0;
   final CollectionReference storiesCollection =
       FirebaseFirestore.instance.collection('Stories');
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animateOpacity();
+    updateUser();
+  }
 
-  Stories({Key? key}) : super(key: key);
+  void updateUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      userId = user.uid;
+    } else {
+      userId = ''; // Set it to an empty string when no user is signed in.
+    }
+  }
+
+  void _animateOpacity() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        _opacity = 1.0;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +239,10 @@ class Stories extends StatelessWidget {
                       final Map<String, dynamic> data =
                           document.data()! as Map<String, dynamic>;
                       final String photoUrl = data['photo_url'];
-                      final Timestamp timestamp = data['date'];
+                      //final Timestamp timestamp = data['date'];
+                      final Timestamp timestamp = data['date'] ??
+                          Timestamp.fromMillisecondsSinceEpoch(0);
+
                       if (timestamp == null) {
                         return Text('Date is null.');
                       }
@@ -262,6 +295,74 @@ class Stories extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Container(
+                                      height: 50,
+                                      width: 50,
+                                      padding: EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                          //shape: BoxShape.circle,
+                                          //borderRadius: BorderRadius.circular(30),
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(60),
+                                            topRight: Radius.circular(60),
+                                            bottomLeft: Radius.circular(60),
+                                            bottomRight: Radius.circular(60),
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.shade700,
+                                              // Color of the shadow
+                                              spreadRadius:
+                                                  1, // Spread radius of the shadow
+                                              blurRadius:
+                                                  1, // Blur radius of the shadow
+                                              offset: Offset(1,
+                                                  1), // Offset of the shadow (horizontal, vertical)
+                                            ),
+                                            BoxShadow(
+                                              color: const Color.fromARGB(
+                                                  141, 176, 190, 197),
+                                              // Color of the shadow
+                                              spreadRadius:
+                                                  1, // Spread radius of the shadow
+                                              blurRadius:
+                                                  1, // Blur radius of the shadow
+                                              offset: Offset(-1,
+                                                  -1), // Offset of the shadow (horizontal, vertical)
+                                            ),
+                                          ],
+                                          gradient: LinearGradient(
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                              colors: [
+                                                const Color.fromARGB(
+                                                    107, 238, 238, 238),
+                                                const Color.fromARGB(
+                                                    98, 189, 189, 189),
+                                              ])),
+                                      child: AnimatedOpacity(
+                                        opacity: _opacity,
+                                        duration: Duration(milliseconds: 2000),
+                                        curve: Curves.easeIn,
+                                        child: CircleAvatar(
+                                            child: ClipOval(
+                                          child: SizedBox(
+                                              width: 60,
+                                              height: 60,
+                                              child: CircleAvatar(
+                                                  radius: 25,
+                                                  backgroundImage:
+                                                      NetworkImage(photoUrl)
+                                                  /* Back(
+                                          fit: BoxFit.cover,
+                                        image: AssetImage('images/Jim.JPG'),
+                                        ),
+                                      ),*/
+                                                  )),
+                                        )),
+                                      ),
+                                    ),
+                                    /*Container(
                                       height: 60,
                                       width: 60,
                                       padding: EdgeInsets.all(3),
@@ -273,9 +374,9 @@ class Stories extends StatelessWidget {
                                         radius: 25,
                                         backgroundImage: NetworkImage(photoUrl),
                                       ),
-                                    ),
+                                    ),*/
                                     SizedBox(
-                                      width: 18,
+                                      width: 25,
                                     ),
                                     Column(
                                       children: [
@@ -289,7 +390,7 @@ class Stories extends StatelessWidget {
                                                 Text(
                                                   userName,
                                                   style: TextStyle(
-                                                    color: Colors.blueGrey,
+                                                    color: Colors.white,
                                                     fontStyle: FontStyle.italic,
                                                     fontSize: 13,
                                                     fontWeight: FontWeight.bold,

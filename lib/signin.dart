@@ -454,8 +454,23 @@ class _signinState extends State<signin> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
+      Navigator.of(context).pushReplacement(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            var begin = 0.0;
+            var end = 1.0;
+            var curve = Curves.ease;
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            return ScaleTransition(
+              scale: animation.drive(tween),
+              child: child,
+            );
+          },
+        ),
+        /*MaterialPageRoute(builder: (_) => HomePage(),*/
+      );
     } on FirebaseAuthException catch (e) {
       print(e);
     }

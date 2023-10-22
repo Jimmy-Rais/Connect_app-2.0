@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'mychat.dart';
 import 'user.dart';
 import 'AllUsers.dart';
+import 'package:google_fonts/google_fonts.dart';
 //final currentUser = FirebaseAuth.instance.currentUser;
 //final currentuserid = currentUser?.uid ?? '';
 //String currentuserid = '';
@@ -192,14 +193,34 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
   String currentuserid = '';
-
+  late String otherUserId;
+  double _opacity = 0.0;
   @override
   void initState() {
     super.initState();
+    _animateOpacity();
     updateUser(); // Initialize currentuserid
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      updateUser(); // Update currentuserid when the authentication state changes
+      updateUser();
+      updateotherUserId(); // Update currentuserid when the authentication state changes
     });
+  }
+
+  void _animateOpacity() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        _opacity = 1.0;
+      });
+    });
+  }
+
+  void updateotherUserId() {
+    String user = otherUserId.toString();
+    if (user != null) {
+      otherUserId = user;
+    } else {
+      otherUserId = ''; // Set it to an empty string when no user is signed in.
+    }
   }
 
   void updateUser() {
@@ -241,7 +262,7 @@ final otherParticipant = participants.firstWhere(
           print(currentuserid);
 
           //Retrieve the other partcicipant id
-          String? otherUserId;
+
           return ListView.builder(
             itemCount: chatDocuments.length,
             itemBuilder: (context, index) {
@@ -268,7 +289,14 @@ final otherParticipant = participants.firstWhere(
                         otherUserId = senderId;
                       } else if (receiverId != currentuserid) {
                         otherUserId = receiverId;
+                      } else {
+                        otherUserId = "";
                       }
+
+                      /*setState(() {
+                        otherUserId = otherUserId;
+                        updateotherUserId();
+                      });*/
                       return ListTile(
                         title: FutureBuilder<DocumentSnapshot>(
                           future: FirebaseFirestore.instance
@@ -284,9 +312,9 @@ final otherParticipant = participants.firstWhere(
                               //return CircularProgressIndicator();
                             }
                             if (!snapshot.hasData || !snapshot.data!.exists) {
-                              return Text('User data not found');
+                              return Container();
                             }
-
+                            print("THE PROB444444 IS HERE $otherUserId");
                             final userData =
                                 snapshot.data!.data() as Map<String, dynamic>;
                             final otherUserName =
@@ -305,6 +333,7 @@ final otherParticipant = participants.firstWhere(
                                   width: 45,
                                   padding: EdgeInsets.all(1),
                                   decoration: BoxDecoration(
+
                                       //shape: BoxShape.circle,
                                       //borderRadius: BorderRadius.circular(30),
                                       color: Colors.grey[300],
@@ -346,21 +375,26 @@ final otherParticipant = participants.firstWhere(
                                             const Color.fromARGB(
                                                 98, 189, 189, 189),
                                           ])),
-                                  child: CircleAvatar(
-                                      child: ClipOval(
-                                    child: SizedBox(
-                                        width: 60,
-                                        height: 60,
-                                        child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              otherUserProfilePhoto ?? ''),
-                                          /* Back(
-                                        fit: BoxFit.cover,
-                                      image: AssetImage('images/Jim.JPG'),
-                                      ),
-                                    ),*/
-                                        )),
-                                  )),
+                                  child: AnimatedOpacity(
+                                    opacity: _opacity,
+                                    duration: Duration(milliseconds: 2000),
+                                    curve: Curves.easeIn,
+                                    child: CircleAvatar(
+                                        child: ClipOval(
+                                      child: SizedBox(
+                                          width: 60,
+                                          height: 60,
+                                          child: CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  otherUserProfilePhoto!)
+                                              /* Back(
+                                          fit: BoxFit.cover,
+                                        image: AssetImage('images/Jim.JPG'),
+                                        ),
+                                      ),*/
+                                              )),
+                                    )),
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 20,
@@ -378,13 +412,25 @@ final otherParticipant = participants.firstWhere(
                                         // CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(height: 20),
-                                          Text(
-                                            otherUserName,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontStyle: FontStyle.italic,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 13,
+                                          AnimatedOpacity(
+                                            opacity: _opacity,
+                                            duration:
+                                                Duration(milliseconds: 5000),
+                                            curve: Curves.easeIn,
+                                            child: DefaultTextStyle(
+                                              style: GoogleFonts.acme(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                              ),
+                                              child: Text(
+                                                otherUserName,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontStyle: FontStyle.italic,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                           SizedBox(
@@ -473,14 +519,41 @@ final otherParticipant = participants.firstWhere(
                           },
                         ),
                         onTap: () {
+                          setState(() {
+                            otherUserId = otherUserId;
+                            updateotherUserId();
+                          });
+                          //print("THE PROB IS HERE $otherUserId");
                           Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      ChatScreen(
+                                          chatDocumentId: chatDoc.id,
+                                          otheruserid: otherUserId),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                var begin = 0.0;
+                                var end = 1.0;
+                                var curve = Curves.ease;
+                                var tween = Tween(begin: begin, end: end)
+                                    .chain(CurveTween(curve: curve));
+                                return ScaleTransition(
+                                  scale: animation.drive(tween),
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                          /* .....Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ChatScreen(
                                   chatDocumentId: chatDoc.id,
                                   userid: otherUserId ?? ""),
                             ),
-                          );
+                          );*/
                         },
                       );
 
@@ -506,8 +579,7 @@ final otherParticipant = participants.firstWhere(
                   }
 
                   // Handle loading state, no documents, or error
-                  return Text(
-                      ''); // or another loading indicator or error message
+                  return Container(); // or another loading indicator or error message
                 },
               );
             },
@@ -540,8 +612,7 @@ final otherParticipant = participants.firstWhere(
             },
           );*/
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-          print("No data");
+          return Container();
         }
         return CircularProgressIndicator();
       },
@@ -551,25 +622,35 @@ final otherParticipant = participants.firstWhere(
 
 class ChatScreen extends StatefulWidget {
   final String chatDocumentId;
-  final String userid;
-  ChatScreen({required this.chatDocumentId, required this.userid});
+  final String otheruserid;
+  ChatScreen({required this.chatDocumentId, required this.otheruserid});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  double _opacity = 0.0;
   late String reciever;
   String currentuserid = '';
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   void initState() {
+    _animateOpacity();
     super.initState();
     updateUser(); // Initialize currentuserid
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       updateUser();
       // Update currentuserid when the authentication state changes
+    });
+  }
+
+  void _animateOpacity() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        _opacity = 1.0;
+      });
     });
   }
 
@@ -594,7 +675,7 @@ class _ChatScreenState extends State<ChatScreen> {
           leading: StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Users')
-                .doc(widget.userid)
+                .doc(widget.otheruserid)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
@@ -660,20 +741,26 @@ class _ChatScreenState extends State<ChatScreen> {
                               const Color.fromARGB(107, 238, 238, 238),
                               const Color.fromARGB(98, 189, 189, 189),
                             ])),
-                    child: CircleAvatar(
-                        child: ClipOval(
-                      child: SizedBox(
-                          width: 60,
-                          height: 60,
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(userPhotoUrl),
-                            /* Back(
-                                        fit: BoxFit.cover,
-                                      image: AssetImage('images/Jim.JPG'),
-                                      ),
-                                    ),*/
-                          )),
-                    )),
+                    child: AnimatedOpacity(
+                      opacity: _opacity,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeOut,
+                      child: CircleAvatar(
+                          child: ClipOval(
+                        child: SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(userPhotoUrl),
+
+                              /* Back(
+                                            fit: BoxFit.cover,
+                                          image: AssetImage('images/Jim.JPG'),
+                                          ),
+                                        ),*/
+                            )),
+                      )),
+                    ),
                   ),
                   /*Container(
                     height: 70,
@@ -684,17 +771,22 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),*/
                   SizedBox(width: 14),
-                  Column(
-                    children: [
-                      SizedBox(height: 18),
-                      Text(
-                        userName,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.white,
+                  AnimatedOpacity(
+                    opacity: _opacity,
+                    duration: Duration(milliseconds: 800),
+                    curve: Curves.easeOutSine,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 18),
+                        Text(
+                          userName,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               );
@@ -712,7 +804,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
           // Other AppBar properties...
         ),
-        bottomNavigationBar: Bottomsection(userid: widget.userid),
+        bottomNavigationBar: Bottomsection(userid: widget.otheruserid),
         /*bottomNavigationBar: StreamBuilder<QuerySnapshot>(
           stream: _firestore.collection('Users').snapshots(),
           builder:
@@ -844,9 +936,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                           Color.fromARGB(197, 0, 0, 0),
                                           Color.fromARGB(200, 0, 0, 0),
                                         ])),
-                          child: Text(
-                            messageText,
-                            style: TextStyle(color: Colors.white),
+                          child: AnimatedOpacity(
+                            opacity: _opacity,
+                            duration: Duration(milliseconds: 800),
+                            curve: Curves.easeIn,
+                            child: Text(
+                              messageText,
+                              style: TextStyle(color: Colors.white),
+                            ),
                           )),
                     );
                   },
