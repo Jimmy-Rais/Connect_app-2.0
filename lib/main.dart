@@ -28,6 +28,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'esp.dart';
 import 'mychats2.dart';
 import 'mychat.dart';
+import 'api/firebase_api.dart';
 
 /*Future<void> getUserData() async {
   final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -51,7 +52,7 @@ class MyState extends ChangeNotifier {
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  await FirebaseApi().initNotifications();
   runApp(
     MyApp(),
   );
