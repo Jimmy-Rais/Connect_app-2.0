@@ -8,6 +8,11 @@ class FirebaseApi {
     await firebaseMessaging.requestPermission();
     final fcmToken = await firebaseMessaging.getToken();
     print('token: $fcmToken');
+    print('token: $fcmToken');
+    print('token: $fcmToken');
+    print('token: $fcmToken');
+    print('token: $fcmToken');
+    print('token: $fcmToken');
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessages);
   }
 }

@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(top: 5, left: 25),
                       child: CircleAvatar(
                         radius: 15,
-                        backgroundImage: AssetImage('images/avatar/Pierre.jpg'),
+                        backgroundImage: AssetImage('images/avatar/shalom.jpg'),
                       ),
                     ),
                   ],
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                                   AnimatedTextKit(
                                     animatedTexts: [
                                       TypewriterAnimatedText(
-                                        'Jimmy Rais',
+                                        'Tanatswa Shalom',
                                         textStyle: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -224,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                                   child: CircleAvatar(
                                     radius: 55,
                                     backgroundImage:
-                                        AssetImage('images/avatar/Pierre.jpg'),
+                                        AssetImage('images/avatar/shalom.jpg'),
                                   ),
                                 ))
                           ],
@@ -383,13 +383,13 @@ class _HomePageState extends State<HomePage> {
                       'LED Status: $ledStatus',
                       style: TextStyle(fontSize: 18),
                     ),*/
-                    SizedBox(height: 20),
+                    SizedBox(height: 110),
                     Container(
                       padding: EdgeInsets.only(
                         right: 10,
                       ),
                       child: Text(
-                        "Made in DR Congo",
+                        "Made  by  jimmyrais63@gmail.com",
                         style: GoogleFonts.acme(
                           fontSize: 10,
                           color: const Color.fromARGB(92, 158, 158, 158),

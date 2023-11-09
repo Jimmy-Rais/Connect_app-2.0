@@ -824,7 +824,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: isCurrentUserSender
-                                  ? Color.fromARGB(255, 49, 154, 215)
+                                  ? Color.fromARGB(145, 26, 53, 69)
                                   : Color.fromARGB(255, 0, 0, 0),
                               boxShadow: isCurrentUserSender
                                   ? [
@@ -876,8 +876,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                       colors: [
-                                          Color.fromARGB(255, 29, 120, 173),
-                                          Color.fromARGB(209, 49, 154, 215),
+                                          Color.fromARGB(255, 21, 27, 31),
+                                          Color.fromARGB(21, 49, 154, 215)
                                         ])
                                   : LinearGradient(
                                       begin: Alignment.topLeft,

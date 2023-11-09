@@ -219,7 +219,7 @@ class _loginState extends State<login> {
               ),
             ),
           ),*/
-          SizedBox(height: 160),
+          SizedBox(height: 230),
           AnimatedOpacity(
             opacity: _opacity,
             duration: Duration(milliseconds: 3000),
@@ -228,14 +228,14 @@ class _loginState extends State<login> {
               children: [
                 SizedBox(width: 120),
                 Text(
-                  "Made  in  DR CONGO",
+                  "Made   by    Rais Gachaba Jimmy",
                   style: GoogleFonts.acme(
                     color: Colors.grey,
                     fontSize: 12,
                   ),
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 1,
                 ),
                 Container(
                   height: 15,

@@ -104,6 +104,7 @@ flutter:
     - images/avatar/connect3.jpg
     - images/avatar/connect4.png
     - images/avatar/googleIc.webp
+    - images/avatar/shalom.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
