@@ -35,7 +35,7 @@ Stories
 
 1. **Clone the repository:** `git clone https://github.com/your_username/connect`
 2. **Install dependencies:** `flutter pub get`
-3. **Configure Firebase:** Follow the instructions in the `firebase_setup.txt` file to set up your Firebase project and integrate it with the app.
+3. **Configure Firebase:**
 4. **Run the app:** `flutter run`
 
 ** Technologies:**
