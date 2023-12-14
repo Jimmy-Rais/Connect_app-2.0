@@ -57,7 +57,11 @@ Stories
 
 **❤️ Author:**
 
-This project was created and maintained by **RAIS GACHABA JIMMY**. You can reach me at jimmyrais63@gmail.com or https://www.linkedin.com/in/rais-gachaba-jimmy-833703258 if you have any questions or feedback.
+This project was created and maintained by **RAIS GACHABA JIMMY**. You can reach me at
+email: jimmyrais63@gmail.com 
+Linkedin : https://www.linkedin.com/in/rais-gachaba-jimmy-833703258
+Github: https://github.com/Jimmy-Rais/
+if you have any questions or feedback.
 
 ** Contributions:**
 
