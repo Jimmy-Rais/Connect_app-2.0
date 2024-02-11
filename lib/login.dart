@@ -219,7 +219,7 @@ class _loginState extends State<login> {
               ),
             ),
           ),*/
-          SizedBox(height: 230),
+          SizedBox(height: 190),
           AnimatedOpacity(
             opacity: _opacity,
             duration: Duration(milliseconds: 3000),
