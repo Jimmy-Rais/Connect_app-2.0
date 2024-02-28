@@ -31,7 +31,7 @@ class _StoryDetailsPageState extends State<StoryDetailsPage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(219, 7, 44, 66),
       appBar: AppBar(
-        title: Text(''),
+        title: Text(' '),
       ),
       body: Stack(
         children: <Widget>[
